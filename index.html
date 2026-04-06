@@ -114,6 +114,28 @@
         body.theme-light input, body.theme-light select, body.theme-light textarea { background-color: rgba(255,255,255,0.7) !important; }
         option { background-color: var(--bg-surface-solid) !important; color: var(--text-main) !important; font-weight: 800; }
     </style>
+
+    <!-- نظام الحماية من التشغيل المحلي بدون سيرفر (لتفادي الأخطاء) -->
+    <script>
+        function checkLocalRun() {
+            if(window.location.protocol === 'file:') {
+                Swal.fire({
+                    title: 'تنبيه هام!',
+                    text: 'لضمان الحماية، المتصفح يمنع الاتصال بقواعد البيانات عند فتح الملف مباشرة من الكمبيوتر. يرجى رفعه على استضافة أو تشغيله عبر سيرفر محلي (Live Server) لتعمل كل الخصائص.',
+                    icon: 'warning',
+                    confirmButtonText: 'فهمت',
+                    background: 'var(--bg-surface-solid)', color: 'var(--text-main)'
+                });
+            }
+        }
+        window.app = {
+            navigate: checkLocalRun, cycleTheme: checkLocalRun, toggleRadio: checkLocalRun, closeImage: checkLocalRun,
+            blood: { switchTab: checkLocalRun, filter: checkLocalRun },
+            services: { filter: checkLocalRun },
+            admin: { loadView: checkLocalRun, transact: checkLocalRun, loadCategoryLogs: checkLocalRun, loadProject: checkLocalRun, createProject: checkLocalRun, editProjectName: checkLocalRun, deleteProject: checkLocalRun, addMonthly: checkLocalRun, delMonthly: checkLocalRun, editMonthly: checkLocalRun, setReminder: checkLocalRun, loadReports: checkLocalRun, filterReports: checkLocalRun, editFullTx: checkLocalRun, saveEditTx: checkLocalRun, delTx: checkLocalRun, addActivity: checkLocalRun, delAct: checkLocalRun, saveTicker: checkLocalRun, saveSpeed: checkLocalRun, showTopicForm: checkLocalRun, hideTopicForm: checkLocalRun, editPor: checkLocalRun, delPor: checkLocalRun, saveTopic: checkLocalRun, toggleEvImgType: checkLocalRun, saveEvent: checkLocalRun, resetEvForm: checkLocalRun, editEv: checkLocalRun, delEv: checkLocalRun, saveAd: checkLocalRun, toggleAdImgType: checkLocalRun, addViewer: checkLocalRun, removeUser: checkLocalRun, saveBbMarquee: checkLocalRun, addBbManual: checkLocalRun, apprBb: checkLocalRun, rejBb: checkLocalRun, delBb: checkLocalRun, openEditBb: checkLocalRun, saveEditBb: checkLocalRun, sendChat: checkLocalRun, loadChat: checkLocalRun, toggleAlbumImgType: checkLocalRun, saveAlbum: checkLocalRun, resetAlbumForm: checkLocalRun, editAlbum: checkLocalRun, delAlbum: checkLocalRun, saveService: checkLocalRun, resetSrvForm: checkLocalRun, editSrv: checkLocalRun, delSrv: checkLocalRun },
+            auth: { login: checkLocalRun, logout: checkLocalRun }
+        };
+    </script>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
 
@@ -142,6 +164,7 @@
             <!-- Desktop Nav -->
             <div class="hidden md:flex items-center gap-2 bg-[var(--bg-surface-solid)] p-1.5 rounded-full border border-[var(--border-color)] shadow-inner">
                 <button onclick="app.navigate('home')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-emerald-500 hover:text-white shadow-sm" data-target="home">الرئيسية</button>
+                <button onclick="app.navigate('services')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-amber-500 hover:text-white shadow-sm" data-target="services">دليل الخدمات</button>
                 <button onclick="app.navigate('bloodbank')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-rose-500 hover:text-white shadow-sm" data-target="bloodbank">بنك الدم</button>
                 <button onclick="app.navigate('events')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-emerald-500 hover:text-white shadow-sm" data-target="events">الفعاليات</button>
                 <button onclick="app.navigate('download')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-cyan-500 hover:text-white shadow-sm" data-target="download">التطبيق</button>
@@ -160,6 +183,7 @@
         <!-- Mobile Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-[var(--border-color)] flex flex-col gap-2">
              <button onclick="app.navigate('home'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] font-bold text-base">الرئيسية</button>
+             <button onclick="app.navigate('services'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] text-amber-500 font-bold text-base">دليل الخدمات (وصلني والعيادات)</button>
              <button onclick="app.navigate('bloodbank'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] text-rose-500 font-bold text-base">بنك الدم</button>
              <button onclick="app.navigate('events'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] text-emerald-500 font-bold text-base">الفعاليات</button>
              <button onclick="app.navigate('download'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] text-cyan-500 font-bold text-base">تحميل التطبيق</button>
@@ -262,25 +286,28 @@
                 </div>
                 
                 <!-- Quick Compact Links (Adjusted for perfect mobile fit) -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto w-full px-2">
-                    <button onclick="app.navigate('events')" class="glass-panel p-5 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-4 sm:gap-2 hover:-translate-y-1 transition-all group border-b-4 border-b-emerald-500 shadow-md hover:shadow-emerald-500/20 bg-[var(--bg-surface-solid)]">
-                        <div class="p-3 bg-emerald-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="calendar-days" class="w-6 h-6 sm:w-8 sm:h-8 text-emerald-500"></i></div>
-                        <span class="font-black text-lg sm:text-base text-white group-hover:text-emerald-400 transition-colors">أحدث الفعاليات</span>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto w-full px-2">
+                    <button onclick="app.navigate('events')" class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group border-b-4 border-b-emerald-500 shadow-md hover:shadow-emerald-500/20 bg-[var(--bg-surface-solid)]">
+                        <div class="p-3 bg-emerald-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="calendar-days" class="w-8 h-8 text-emerald-500"></i></div>
+                        <span class="font-black text-base text-white group-hover:text-emerald-400 transition-colors">أحدث الفعاليات</span>
                     </button>
-                    <button onclick="app.navigate('bloodbank')" class="glass-panel p-5 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-4 sm:gap-2 hover:-translate-y-1 transition-all group border-b-4 border-b-rose-500 shadow-md hover:shadow-rose-500/20 bg-[var(--bg-surface-solid)]">
-                        <div class="p-3 bg-rose-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="heart-pulse" class="w-6 h-6 sm:w-8 sm:h-8 text-rose-500"></i></div>
-                        <span class="font-black text-lg sm:text-base text-white group-hover:text-rose-400 transition-colors">بنك الدم</span>
+                    <button onclick="app.navigate('services')" class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group border-b-4 border-b-amber-500 shadow-md hover:shadow-amber-500/20 bg-[var(--bg-surface-solid)]">
+                        <div class="p-3 bg-amber-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="map-pin" class="w-8 h-8 text-amber-500"></i></div>
+                        <span class="font-black text-base text-white group-hover:text-amber-400 transition-colors">دليل الخدمات</span>
                     </button>
-                    <button onclick="app.navigate('download')" class="glass-panel p-5 rounded-2xl flex flex-row sm:flex-col items-center justify-center gap-4 sm:gap-2 hover:-translate-y-1 transition-all group border-b-4 border-b-cyan-500 shadow-md hover:shadow-cyan-500/20 bg-[var(--bg-surface-solid)]">
-                        <div class="p-3 bg-cyan-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="smartphone" class="w-6 h-6 sm:w-8 sm:h-8 text-cyan-500"></i></div>
-                        <span class="font-black text-lg sm:text-base text-white group-hover:text-cyan-400 transition-colors">تطبيق الهاتف</span>
+                    <button onclick="app.navigate('bloodbank')" class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group border-b-4 border-b-rose-500 shadow-md hover:shadow-rose-500/20 bg-[var(--bg-surface-solid)]">
+                        <div class="p-3 bg-rose-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="heart-pulse" class="w-8 h-8 text-rose-500"></i></div>
+                        <span class="font-black text-base text-white group-hover:text-rose-400 transition-colors">بنك الدم</span>
+                    </button>
+                    <button onclick="app.navigate('download')" class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group border-b-4 border-b-cyan-500 shadow-md hover:shadow-cyan-500/20 bg-[var(--bg-surface-solid)]">
+                        <div class="p-3 bg-cyan-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="smartphone" class="w-8 h-8 text-cyan-500"></i></div>
+                        <span class="font-black text-base text-white group-hover:text-cyan-400 transition-colors">تطبيق الهاتف</span>
                     </button>
                 </div>
             </div>
 
             <!-- Info & Contact Section -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-                
                 <!-- Info & Socials Card -->
                 <div class="glass-panel rounded-3xl p-8 shadow-lg border-t-8 border-t-emerald-500 flex flex-col gap-6">
                     <div class="text-center mb-2">
@@ -301,7 +328,7 @@
                         <div class="flex-1">
                             <p class="text-base font-bold text-[var(--text-muted)] mb-1">رئيس الجمعية</p>
                             <p class="text-2xl font-black text-white mb-1">أ. طلال محمود</p>
-                            <p class="text-lg font-bold text-emerald-400" dir="ltr">01064831637</p>
+                            <p class="text-lg font-bold text-emerald-400" dir="ltr">01018282460</p>
                         </div>
                     </div>
 
@@ -438,7 +465,32 @@
         </div>
     </template>
 
-    <!-- 5. Admin Dashboard Base -->
+    <!-- NEW 5. Services Directory View -->
+    <template id="view-services">
+        <div class="animate-fade-in max-w-6xl mx-auto">
+            <div class="text-center mb-10">
+                <div class="w-20 h-20 mx-auto bg-amber-500/20 rounded-full flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(245,158,11,0.3)] border border-amber-500/40">
+                    <i data-lucide="map-pin" class="w-10 h-10 text-amber-500"></i>
+                </div>
+                <h1 class="text-4xl font-black text-amber-500 mb-2 drop-shadow-md">دليل الخدمات</h1>
+                <p class="text-[var(--text-muted)] text-base font-bold">أرقام وتفاصيل الخدمات المحلية في بلدنا</p>
+            </div>
+
+            <!-- Services Filter Tabs -->
+            <div class="glass-panel rounded-3xl p-6 text-center shadow-lg border-t-4 border-t-amber-500 mb-8 overflow-x-auto whitespace-nowrap custom-scroll">
+                <div class="flex items-center justify-center gap-3 min-w-max mx-auto" id="services-type-filters">
+                    <!-- Filters generated by JS -->
+                </div>
+            </div>
+
+            <!-- Services Grid -->
+            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards generated by JS -->
+            </div>
+        </div>
+    </template>
+
+    <!-- 6. Admin Dashboard Base -->
     <template id="view-admin">
         <div class="animate-fade-in flex flex-col lg:flex-row gap-6 min-h-[80vh]">
             <!-- Sidebar -->
@@ -487,6 +539,51 @@
             </div>
         </form>
         <div id="album-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </template>
+
+    <!-- Admin Sub: Services Directory -->
+    <template id="tpl-admin-services">
+        <h2 class="text-3xl font-black mb-8 text-amber-500 flex items-center gap-3"><i data-lucide="map-pin" class="w-8 h-8"></i> دليل الخدمات المحلية</h2>
+        <form id="srv-form" class="glass-panel p-6 md:p-8 rounded-[2rem] space-y-6 admin-only shadow-lg border-t-4 border-t-amber-500 mb-8" onsubmit="app.admin.saveService(event)">
+            <input type="hidden" id="srv-id">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm font-bold text-[var(--text-muted)] ml-2 block mb-2">تصنيف الخدمة</label>
+                    <select id="srv-cat" required class="w-full px-4 py-3 rounded-xl font-bold text-lg bg-[var(--bg-base)] text-amber-500 border border-[var(--border-color)] focus:border-amber-500">
+                        <option value="" disabled selected>اختر القسم...</option>
+                        <option value="عيادات طبية">عيادات طبية</option>
+                        <option value="صيدليات">صيدليات</option>
+                        <option value="معامل تحاليل">معامل تحاليل</option>
+                        <option value="وصّلني (مواصلات)">وصّلني (مواصلات)</option>
+                        <option value="خدمات عامة أخرى">خدمات عامة أخرى</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-sm font-bold text-[var(--text-muted)] ml-2 block mb-2">الاسم (اسم الدكتور، الصيدلية، أو صاحب المركبة)</label>
+                    <input type="text" id="srv-name" placeholder="الاسم..." required class="w-full px-4 py-3 rounded-xl text-lg font-bold bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-amber-500">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm font-bold text-[var(--text-muted)] ml-2 block mb-2">التفاصيل (التخصص، العنوان، أو نوع المركبة)</label>
+                    <input type="text" id="srv-details" placeholder="مثال: باطنة، بجوار المسجد، توك توك..." required class="w-full px-4 py-3 rounded-xl text-lg font-bold bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="text-sm font-bold text-[var(--text-muted)] ml-2 block mb-2">رقم التواصل</label>
+                    <input type="tel" id="srv-phone" placeholder="رقم الهاتف" required class="w-full px-4 py-3 rounded-xl text-lg font-bold text-left bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-amber-500" dir="ltr">
+                </div>
+            </div>
+            <div class="flex gap-4 mt-6">
+                <button type="submit" id="srv-submit-btn" class="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3.5 rounded-xl font-black text-xl shadow-md border border-amber-400 transition-transform hover:scale-[1.02]">إضافة الدليل <i data-lucide="plus-circle" class="w-6 h-6 inline ml-1"></i></button>
+                <button type="button" id="srv-cancel-btn" class="hidden flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3.5 rounded-xl font-black text-lg shadow-md border border-gray-400" onclick="app.admin.resetSrvForm()">إلغاء التعديل</button>
+            </div>
+        </form>
+        <div class="solid-panel p-6 rounded-3xl border border-[var(--border-color)] shadow-md overflow-x-auto custom-scroll">
+            <table class="w-full text-right text-base whitespace-nowrap min-w-[600px]">
+                <thead class="bg-[var(--bg-base)] text-[var(--text-muted)] border-b border-[var(--border-color)]"><tr><th class="p-4 font-bold">القسم</th><th class="p-4 font-bold text-amber-500">الاسم</th><th class="p-4 font-bold">التفاصيل</th><th class="p-4 font-bold text-left text-blue-400">التواصل المباشر</th><th class="p-4 font-bold admin-only text-center">إدارة</th></tr></thead>
+                <tbody id="srv-list" class="divide-y divide-[var(--border-color)] font-semibold"></tbody>
+            </table>
+        </div>
     </template>
 
     <!-- Admin Sub: Finances -->
@@ -879,7 +976,7 @@
                 <div><label class="text-xs font-bold text-[var(--text-muted)] ml-1 mb-1 block">الاسم المعتمد</label><input type="text" id="edit-bb-name" class="w-full px-4 py-3 rounded-xl font-black text-base border border-[var(--border-color)] bg-[var(--bg-base)] focus:border-rose-500"></div>
                 <div class="flex gap-3">
                     <div class="w-1/3"><label class="text-xs font-bold text-[var(--text-muted)] ml-1 mb-1 block">العمر</label><input type="number" id="edit-bb-age" class="w-full px-4 py-3 rounded-xl font-black text-base text-center border border-[var(--border-color)] bg-[var(--bg-base)] focus:border-rose-500"></div>
-                    <div class="flex-1"><label class="text-xs font-bold text-[var(--text-muted)] ml-1 mb-1 block">الفصيلة</label><select id="edit-bb-blood" class="w-full px-4 py-3 rounded-xl font-black text-xl text-center text-white bg-rose-600 border border-rose-400 shadow-sm focus:outline-none"><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="AB+">AB+</option><option value="AB-">AB-</option><option value="O+">O+</option><option value="O-">O-</option></select></div>
+                    <div class="flex-1"><label class="text-xs font-bold text-[var(--text-muted)] ml-1 mb-1 block">الفصيلة المؤكدة</label><select id="edit-bb-blood" class="w-full px-4 py-3 rounded-xl font-black text-xl text-center text-white bg-rose-600 border border-rose-400 shadow-sm focus:outline-none"><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="AB+">AB+</option><option value="AB-">AB-</option><option value="O+">O+</option><option value="O-">O-</option></select></div>
                 </div>
                 <div><label class="text-xs font-bold text-[var(--text-muted)] ml-1 mb-1 block">رقم التليفون</label><input type="tel" id="edit-bb-phone" class="w-full px-4 py-3 rounded-xl font-black text-base text-center border border-[var(--border-color)] bg-[var(--bg-base)] focus:border-rose-500 tracking-widest text-blue-400" dir="ltr"></div>
                 <div><label class="text-xs font-bold text-[var(--text-muted)] ml-1 mb-1 block">حالة التواجد الحالية</label><select id="edit-bb-avail" class="w-full px-4 py-3 rounded-xl font-black text-base border border-[var(--border-color)] bg-[var(--bg-base)] focus:border-rose-500 text-center"><option value="available" class="text-emerald-400">متاح وجاهز للتبرع</option><option value="traveling" class="text-amber-400">غير متاح / خارج البلد</option></select></div>
@@ -935,8 +1032,9 @@
                 this.unsubs = []; this.intervals = []; this.role = 'guest'; this.user = null; this.view = 'home';
                 this.portalSecs = { past_work: { t: 'أعمالنا السابقة', i: 'history', c: 'blue' }, current_work: { t: 'أعمالنا الحالية', i: 'zap', c: 'amber' }, future_work: { t: 'أعمالنا اللاحقة', i: 'rocket', c: 'purple' }, year_expenses: { t: 'مصروفات العام', i: 'wallet', c: 'emerald' } };
                 this.donCats = { debt_relief: "سداد ديون الغارمين", patient_care: "رعاية المرضى", family_projects: "مشروعات تنموية للأسر", food_aid: "شنط رمضان والمساعدات الغذائية", education: "التبرع للتعليم", zakat: "زكاة المال", feeding: "الإطعام", oath_expiation: "كفارة يمين", marriage_aid: "مساعدات زواج" };
+                this.serviceCats = { clinics: 'عيادات طبية', pharmacies: 'صيدليات', labs: 'معامل تحاليل', wasalny: 'وصّلني (مواصلات)', other: 'خدمات عامة أخرى' };
                 
-                this.auth = new AuthMod(this); this.pub = new PublicMod(this); this.blood = new BloodMod(this); this.admin = new AdminMod(this);
+                this.auth = new AuthMod(this); this.pub = new PublicMod(this); this.blood = new BloodMod(this); this.admin = new AdminMod(this); this.services = new ServicesMod(this);
                 
                 window.onload = () => {
                     lucide.createIcons(); this.setupClock(); this.pub.initBloodDrops();
@@ -944,19 +1042,28 @@
                 };
             }
             
-            safeSnapshot(ref, callback) { return onSnapshot(ref, callback, err => {}); }
+            safeSnapshot(ref, callback) {
+                return onSnapshot(ref, callback, err => { /* Ignore missing collection errors to prevent UI break */ });
+            }
+
             clear() { this.unsubs.forEach(u=>u()); this.unsubs=[]; this.intervals.forEach(clearInterval); this.intervals=[]; }
             
             navigate(v) {
                 if(v === 'admin' && this.role === 'guest') return document.getElementById('login-modal').classList.remove('hidden');
                 this.view = v; const c = document.getElementById('app-content'); const t = document.getElementById(`view-${v}`);
                 if(c && t) { c.innerHTML=''; c.appendChild(t.content.cloneNode(true)); lucide.createIcons(); }
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('bg-emerald-500','bg-rose-500','bg-cyan-500','text-white'));
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('bg-emerald-500','bg-rose-500','bg-cyan-500','bg-amber-500','text-white'));
                 const a = document.querySelector(`.nav-btn[data-target="${v}"]`); 
-                if(a) a.classList.add(v==='bloodbank'?'bg-rose-500':v==='download'?'bg-cyan-500':'bg-emerald-500', 'text-white');
+                if(a) {
+                    let colorClass = 'bg-emerald-500';
+                    if(v === 'bloodbank') colorClass = 'bg-rose-500';
+                    else if(v === 'download') colorClass = 'bg-cyan-500';
+                    else if(v === 'services') colorClass = 'bg-amber-500';
+                    a.classList.add(colorClass, 'text-white');
+                }
                 document.getElementById('blood-fx').classList.toggle('active', v==='bloodbank');
                 this.clear();
-                if(v==='home') this.pub.initHome(); else if(v==='events') this.pub.initEvents(); else if(v==='bloodbank') this.blood.initPub(); else if(v==='admin') this.admin.init();
+                if(v==='home') this.pub.initHome(); else if(v==='events') this.pub.initEvents(); else if(v==='bloodbank') this.blood.initPub(); else if(v==='admin') this.admin.init(); else if(v==='services') this.services.initPub();
             }
 
             cycleTheme() { const ts = ['default', 'light', 'blue']; let c = localStorage.getItem('theme')||'default'; let n = ts[(ts.indexOf(c)+1)%ts.length]; document.body.className = `theme-${n} antialiased min-h-screen flex flex-col`; localStorage.setItem('theme', n); }
@@ -1063,22 +1170,75 @@
                         const c=document.createElement('div'); 
                         c.className='glass-panel rounded-3xl overflow-hidden group border border-[var(--border-color)] shadow-lg hover:shadow-[0_20px_50px_rgba(16,185,129,0.2)] transition-shadow flex flex-col h-[450px]'; 
                         c.innerHTML=`
-                            <div class="relative overflow-hidden cursor-pointer shrink-0" onclick="app.showImage('${dt.imageUrl||'https://placehold.co/400x250/10b981/fff?text=Event'}'); event.preventDefault();">
-                                <img src="${dt.imageUrl||'https://placehold.co/400x250/10b981/fff?text=Event'}" class="w-full h-56 object-cover transform group-hover:scale-110 transition-transform duration-700">
+                            <div class="relative overflow-hidden cursor-pointer shrink-0 h-56 w-full group" onclick="app.showImage('${dt.imageUrl||'https://placehold.co/400x250/10b981/fff?text=Event'}'); event.preventDefault();">
+                                <img src="${dt.imageUrl||'https://placehold.co/400x250/10b981/fff?text=Event'}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>
-                                <div class="absolute top-4 left-4 bg-black/50 p-2 rounded-full text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="zoom-in" class="w-5 h-5"></i></div>
+                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black/60 p-3 rounded-full text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="zoom-in" class="w-6 h-6"></i></div>
                             </div>
                             <div class="p-6 relative -mt-6 bg-[var(--bg-surface-solid)] rounded-t-[2rem] z-10 flex flex-col flex-1 min-h-0">
                                 <h3 class="font-black text-xl mb-3 group-hover:text-emerald-400 transition-colors leading-snug shrink-0">${dt.title}</h3>
-                                <div class="flex-1 overflow-y-auto custom-scroll pr-2 mb-4 bg-[var(--bg-base)] p-3 rounded-xl border border-[var(--border-color)]">
+                                <div class="flex-1 overflow-y-auto custom-scroll pr-2 mb-4 bg-[var(--bg-base)] p-4 rounded-xl border border-[var(--border-color)]">
                                     <p class="text-sm font-bold text-[var(--text-muted)] leading-relaxed whitespace-pre-wrap">${dt.description||'لا يوجد تفاصيل إضافية.'}</p>
                                 </div>
-                                <a href="${dt.url}" target="_blank" class="shrink-0 w-full py-3 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white rounded-xl text-center font-bold text-sm transition-colors border border-emerald-500/30 shadow-sm flex items-center justify-center gap-2"><i data-lucide="external-link" class="w-4 h-4"></i> الذهاب للمنشور</a>
+                                <a href="${dt.url}" target="_blank" class="shrink-0 w-full py-3 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white rounded-xl text-center font-bold text-sm transition-colors border border-emerald-500/30 shadow-sm flex items-center justify-center gap-2"><i data-lucide="external-link" class="w-4 h-4"></i> الذهاب للمنشور الأصلي</a>
                             </div>`; 
                         g.appendChild(c); 
                     });
                     lucide.createIcons();
                 }));
+            }
+        }
+
+        // --- NEW: SERVICES DIRECTORY ---
+        class ServicesMod {
+            constructor(a) { this.a = a; this.services = []; }
+            initPub() {
+                this.renderFilters();
+                this.a.unsubs.push(this.a.safeSnapshot(query(collection(db, 'services'), orderBy('createdAt', 'desc')), s => {
+                    this.services = s.docs.map(x => ({id: x.id, ...x.data()}));
+                    this.renderSrvs('الكل');
+                }));
+            }
+            renderFilters() {
+                const f = document.getElementById('services-type-filters'); if(!f) return;
+                const cats = ['الكل', ...Object.values(this.a.serviceCats)];
+                f.innerHTML = cats.map(t => `<button onclick="app.services.filter('${t}')" class="srv-filt px-6 py-2.5 rounded-xl text-sm font-black border-2 border-amber-500/30 hover:bg-amber-500/20 transition-colors shadow-sm ${t==='الكل'?'bg-amber-500 text-white border-amber-500 shadow-amber-500/40':'text-amber-500'}">${t}</button>`).join('');
+            }
+            filter(t) {
+                document.querySelectorAll('.srv-filt').forEach(b => { b.classList.remove('bg-amber-500','text-white','border-amber-500','shadow-amber-500/40'); b.classList.add('text-amber-500'); if(b.textContent===t){ b.classList.add('bg-amber-500','text-white','border-amber-500','shadow-amber-500/40'); b.classList.remove('text-amber-500'); } });
+                this.renderSrvs(t);
+            }
+            renderSrvs(t) {
+                const g = document.getElementById('services-grid'); if(!g) return;
+                let l = t === 'الكل' ? this.services : this.services.filter(x => x.category === t);
+                g.innerHTML = '';
+                if(!l.length){ g.innerHTML = `<div class="col-span-full text-center bg-amber-900/10 border border-amber-500/30 rounded-2xl p-8 font-bold text-lg text-amber-500">لم يتم إضافة خدمات في هذا القسم بعد.</div>`; return; }
+                
+                l.forEach(d => {
+                    const isWasalny = d.category === 'وصّلني (مواصلات)';
+                    const icon = isWasalny ? 'car' : (d.category.includes('صيد') ? 'pill' : (d.category.includes('معامل') ? 'flask-conical' : 'stethoscope'));
+                    
+                    g.innerHTML += `
+                        <div class="glass-panel p-6 rounded-3xl flex flex-col shadow-lg border-t-4 border-t-amber-500 hover:-translate-y-1 transition-transform">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex-1 pl-2">
+                                    <h3 class="font-black text-xl mb-1 text-white">${d.name}</h3>
+                                    <span class="text-xs font-bold px-3 py-1 rounded-full border bg-amber-500/20 text-amber-400 border-amber-500/30 inline-block">${d.category}</span>
+                                </div>
+                                <div class="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center border border-amber-500/40 shadow-inner shrink-0">
+                                    <i data-lucide="${icon}" class="w-7 h-7 text-amber-500"></i>
+                                </div>
+                            </div>
+                            <div class="bg-[var(--bg-base)] p-4 rounded-xl mb-4 border border-[var(--border-color)]">
+                                <p class="text-sm font-bold text-[var(--text-muted)] leading-relaxed"><i data-lucide="info" class="w-4 h-4 inline mr-1 text-amber-400"></i> ${d.details}</p>
+                            </div>
+                            <div class="mt-auto flex gap-3">
+                                <a href="https://wa.me/20${d.phone.replace(/^0+/,'')}" target="_blank" class="flex-1 bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366] hover:text-white py-2.5 rounded-xl text-center font-black text-sm transition-all shadow-md flex items-center justify-center gap-1.5"><i data-lucide="message-circle" class="w-4 h-4"></i> واتساب</a>
+                                <a href="tel:${d.phone}" class="flex-1 bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white py-2.5 rounded-xl text-center font-black text-sm transition-all shadow-md flex items-center justify-center gap-1.5"><i data-lucide="phone-call" class="w-4 h-4"></i> اتصال مباشر</a>
+                            </div>
+                        </div>`;
+                });
+                lucide.createIcons();
             }
         }
 
@@ -1097,7 +1257,7 @@
             renderDons(t) {
                 const g=document.getElementById('donors-grid'); if(!g)return; let l=t==='الكل'?this.donors:this.donors.filter(x=>x.bloodType===t); g.innerHTML='';
                 if(!l.length){g.innerHTML=`<div class="col-span-full text-center bg-rose-900/10 border border-rose-500/30 rounded-2xl p-8 font-bold text-lg text-rose-400">عفواً، لا يوجد متبرعون بهذه الفصيلة في قاعدة البيانات حتى الآن.</div>`;return;}
-                l.forEach(d => { const a=d.availability==='available'; g.innerHTML+=`<div class="glass-panel p-6 rounded-3xl flex flex-col shadow-lg border-t-4 ${a?'border-t-emerald-500':'border-t-amber-500'} hover:-translate-y-1 transition-transform"><div class="flex justify-between items-start mb-4"><div><h3 class="font-black text-xl mb-2 text-white">${d.name}</h3><span class="text-xs font-bold px-3 py-1 rounded-full border ${a?'bg-emerald-500/20 text-emerald-400 border-emerald-500/30':'bg-amber-500/20 text-amber-400 border-amber-500/30'}"><i data-lucide="${a?'check-circle':'plane'}" class="w-3 h-3 inline mr-1"></i>${a?'متواجد ومتاح':'مسافر / غير متاح'}</span></div><div class="w-12 h-12 bg-rose-500/20 rounded-xl flex items-center justify-center font-black text-rose-500 text-xl border border-rose-500/40 shadow-inner">${d.bloodType}</div></div><div class="bg-[var(--bg-base)] p-3 rounded-xl mb-4 border border-[var(--border-color)] text-center"><p class="text-sm font-black font-mono text-blue-400 tracking-widest" dir="ltr"><i data-lucide="phone-call" class="w-4 h-4 inline-block mr-2 text-[var(--text-muted)]"></i>${d.phone}</p></div><div class="mt-auto flex gap-3"><a href="https://wa.me/2${d.phone.replace(/^0+/,'')}" target="_blank" class="flex-1 bg-gradient-to-r from-green-500 to-[#25D366] hover:from-green-600 hover:to-[#128C7E] text-white py-3 rounded-xl text-center font-black text-sm transition-all shadow-md flex items-center justify-center gap-1.5"><i data-lucide="message-circle" class="w-4 h-4"></i> واتس</a><a href="tel:${d.phone}" class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white py-3 rounded-xl text-center font-black text-sm transition-all shadow-md flex items-center justify-center gap-1.5"><i data-lucide="phone" class="w-4 h-4"></i> اتصال</a></div></div>`; }); lucide.createIcons();
+                l.forEach(d => { const a=d.availability==='available'; g.innerHTML+=`<div class="glass-panel p-6 rounded-3xl flex flex-col shadow-lg border-t-4 ${a?'border-t-emerald-500':'border-t-amber-500'} hover:-translate-y-1 transition-transform"><div class="flex justify-between items-start mb-4"><div><h3 class="font-black text-xl mb-2 text-white">${d.name}</h3><span class="text-xs font-bold px-3 py-1 rounded-full border ${a?'bg-emerald-500/20 text-emerald-400 border-emerald-500/30':'bg-amber-500/20 text-amber-400 border-amber-500/30'}"><i data-lucide="${a?'check-circle':'plane'}" class="w-3 h-3 inline mr-1"></i>${a?'متواجد ومتاح':'مسافر / غير متاح'}</span></div><div class="w-12 h-12 bg-rose-500/20 rounded-xl flex items-center justify-center font-black text-rose-500 text-xl border border-rose-500/40 shadow-inner">${d.bloodType}</div></div><div class="bg-[var(--bg-base)] p-3 rounded-xl mb-4 border border-[var(--border-color)] text-center"><p class="text-sm font-black font-mono text-blue-400 tracking-widest" dir="ltr"><i data-lucide="phone-call" class="w-4 h-4 inline-block mr-2 text-[var(--text-muted)]"></i>${d.phone}</p></div><div class="mt-auto flex gap-3"><a href="https://wa.me/20${d.phone.replace(/^0+/,'')}" target="_blank" class="flex-1 bg-gradient-to-r from-green-500 to-[#25D366] hover:from-green-600 hover:to-[#128C7E] text-white py-3 rounded-xl text-center font-black text-sm transition-all shadow-md flex items-center justify-center gap-1.5"><i data-lucide="message-circle" class="w-4 h-4"></i> واتس</a><a href="tel:${d.phone}" class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white py-3 rounded-xl text-center font-black text-sm transition-all shadow-md flex items-center justify-center gap-1.5"><i data-lucide="phone" class="w-4 h-4"></i> اتصال</a></div></div>`; }); lucide.createIcons();
             }
         }
 
@@ -1108,7 +1268,7 @@
                 document.getElementById('admin-email-display').textContent=this.a.user.email;
                 const n=document.getElementById('admin-sidebar-nav'); n.innerHTML='';
                 const b=(v,i,t,d) => `<button onclick="app.admin.loadView('${v}')" class="nav-ad-${v} w-full text-center lg:text-right px-3 py-3 lg:px-5 lg:py-4 rounded-xl transition-all flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-2 lg:gap-3 font-bold text-[14px] lg:text-base shrink-0 ${d?'bg-emerald-500 text-white shadow-md':'bg-[var(--bg-surface-solid)] lg:bg-transparent hover:bg-[var(--bg-surface-solid)] text-[var(--text-muted)] hover:text-white border border-[var(--border-color)] lg:border-transparent'}"><i data-lucide="${i}" class="w-6 h-6 lg:w-5 lg:h-5 shrink-0"></i> <span class="leading-snug">${t}</span></button>`;
-                n.innerHTML=b('finances','dollar-sign','المالية والخزينة',true)+b('reports','file-text','السجل المالي')+b('activities','clipboard-list','توثيق الأنشطة')+b('portal','layout-template','محتوى البوابة')+b('album','images','ألبوم الصور')+b('events','calendar-days','أرشيف الفعاليات')+b('messages','message-square','الرسائل الواردة')+b('ads','megaphone','الإعلان الممول')+(this.a.role==='admin'?b('users','users','صلاحيات الإدارة'):'')+b('bloodbank','droplet','بنك الدم');
+                n.innerHTML=b('finances','dollar-sign','المالية والخزينة',true)+b('reports','file-text','السجل المالي')+b('activities','clipboard-list','توثيق الأنشطة')+b('services','map-pin','دليل الخدمات')+b('portal','layout-template','محتوى البوابة')+b('album','images','ألبوم الصور')+b('events','calendar-days','أرشيف الفعاليات')+b('messages','message-square','الرسائل الواردة')+b('ads','megaphone','الإعلان الممول')+(this.a.role==='admin'?b('users','users','صلاحيات الإدارة'):'')+b('bloodbank','droplet','بنك الدم');
                 lucide.createIcons(); this.loadView('finances');
             }
             loadView(v) {
@@ -1116,7 +1276,7 @@
                 document.querySelector(`.nav-ad-${v}`).classList.add('bg-emerald-500','text-white','shadow-md'); 
                 document.querySelector(`.nav-ad-${v}`).classList.remove('bg-[var(--bg-surface-solid)]','lg:bg-transparent','text-[var(--text-muted)]','border-[var(--border-color)]');
                 this.a.clear(); const c=document.getElementById('admin-content-area'); c.innerHTML=''; c.appendChild(document.getElementById(`tpl-admin-${v}`).content.cloneNode(true)); lucide.createIcons();
-                if(v==='finances') this.initFin(); else if(v==='reports') this.loadReports(); else if(v==='activities') this.initAct(); else if(v==='portal') this.initPor(); else if(v==='events') this.initEv(); else if(v==='messages') this.initMsg(); else if(v==='ads') this.initAds(); else if(v==='users') this.initUsr(); else if(v==='bloodbank') this.initBb(); else if(v==='album') this.initAlbum();
+                if(v==='finances') this.initFin(); else if(v==='reports') this.loadReports(); else if(v==='activities') this.initAct(); else if(v==='portal') this.initPor(); else if(v==='events') this.initEv(); else if(v==='messages') this.initMsg(); else if(v==='ads') this.initAds(); else if(v==='users') this.initUsr(); else if(v==='bloodbank') this.initBb(); else if(v==='album') this.initAlbum(); else if(v==='services') this.initSrv();
                 this.a.auth.updateUI();
             }
 
@@ -1126,7 +1286,7 @@
                     const l=document.getElementById('album-list'); l.innerHTML=''; 
                     s.forEach(d=>{ 
                         const v=d.data(); 
-                        l.innerHTML+=`<div class="bg-[var(--bg-base)] p-4 rounded-3xl border border-[var(--border-color)] flex flex-col shadow-md hover:border-indigo-500/50 transition-colors"><div class="relative w-full h-40 rounded-xl overflow-hidden mb-3"><img src="${v.imageUrl}" class="w-full h-full object-cover"></div><h4 class="font-bold text-sm line-clamp-2 flex-1 text-white leading-snug mb-3">${v.caption || 'بدون نص'}</h4><div class="flex gap-2 admin-only"><button onclick="app.admin.editAlbum('${d.id}','${v.imageUrl}','${(v.caption||'').replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/\n/g,"\\\\n").replace(/\r/g,"")}')" class="flex-1 text-cyan-400 bg-cyan-900/40 py-2 rounded-xl hover:bg-cyan-500 hover:text-white transition-colors border border-cyan-500/50"><i data-lucide="edit-3" class="w-4 h-4 mx-auto"></i></button><button onclick="app.admin.delAlbum('${d.id}')" class="flex-1 text-rose-400 bg-rose-900/40 py-2 rounded-xl hover:bg-rose-500 hover:text-white transition-colors border border-rose-500/50"><i data-lucide="trash-2" class="w-4 h-4 mx-auto"></i></button></div></div>`; 
+                        l.innerHTML+=`<div class="bg-[var(--bg-base)] p-4 rounded-3xl border border-[var(--border-color)] flex flex-col shadow-md hover:border-indigo-500/50 transition-colors"><div class="relative w-full h-40 rounded-xl overflow-hidden mb-3 cursor-pointer group" onclick="app.showImage('${v.imageUrl}')"><img src="${v.imageUrl}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"><div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="text-white w-8 h-8"></i></div></div><h4 class="font-bold text-sm line-clamp-2 flex-1 text-white leading-snug mb-3">${v.caption || 'بدون نص'}</h4><div class="flex gap-2 admin-only"><button onclick="app.admin.editAlbum('${d.id}','${v.imageUrl}','${(v.caption||'').replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="flex-1 text-cyan-400 bg-cyan-900/40 py-2 rounded-xl hover:bg-cyan-500 hover:text-white transition-colors border border-cyan-500/50"><i data-lucide="edit-3" class="w-4 h-4 mx-auto"></i></button><button onclick="app.admin.delAlbum('${d.id}')" class="flex-1 text-rose-400 bg-rose-900/40 py-2 rounded-xl hover:bg-rose-500 hover:text-white transition-colors border border-rose-500/50"><i data-lucide="trash-2" class="w-4 h-4 mx-auto"></i></button></div></div>`; 
                     }); 
                     lucide.createIcons(); 
                 }));
@@ -1144,18 +1304,42 @@
                     if(tp==='file') {
                         const fileInput = document.getElementById('album-img-file');
                         if(fileInput.files.length > 0) iu = await uploadImg(fileInput.files[0]); 
-                        else throw new Error("يرجى إرفاق صورة من جهازك أولاً.");
-                    } else if (tp === 'url' && !iu.trim()) throw new Error("يرجى إدخال رابط الصورة.");
+                        else throw new Error("يرجى إرفاق صورة أولاً.");
+                    } else if (tp === 'url' && !iu.trim()) throw new Error("يرجى إدخال الرابط.");
                     
                     if(!iu) throw new Error("تعذر الحصول على مسار الصورة.");
                     const dt={caption:t,imageUrl:iu}; 
                     if(i) await updateDoc(doc(db,'album_images',i),{...dt,updatedAt:serverTimestamp()}); else await addDoc(collection(db,'album_images'),{...dt,createdAt:serverTimestamp()}); 
                     this.resetAlbumForm(); toast('تم حفظ الصورة بنجاح.', 'success'); 
-                }catch(er){ toast(er.message || 'فشلت العملية، تأكد من الإنترنت.', 'error');}finally{b.disabled=false; b.innerHTML=document.getElementById('album-id').value ? 'حفظ التعديل <i data-lucide="save" class="w-6 h-6 inline ml-1"></i>' : 'إضافة للألبوم <i data-lucide="plus-circle" class="w-6 h-6 inline ml-1"></i>';lucide.createIcons();} 
+                }catch(er){ toast(er.message || 'فشل', 'error');}finally{b.disabled=false; b.innerHTML=document.getElementById('album-id').value ? 'حفظ التعديل <i data-lucide="save" class="w-6 h-6 inline ml-1"></i>' : 'إضافة للألبوم <i data-lucide="plus-circle" class="w-6 h-6 inline ml-1"></i>';lucide.createIcons();} 
             }
             resetAlbumForm() { document.getElementById('album-form').reset(); document.getElementById('album-id').value=''; document.getElementById('album-cancel-btn').classList.add('hidden'); document.getElementById('album-submit-btn').innerHTML='إضافة للألبوم <i data-lucide="plus-circle" class="w-6 h-6 inline ml-1"></i>'; lucide.createIcons(); document.getElementById('album-img-type').value='file'; this.toggleAlbumImgType(); }
             editAlbum(i,iu,t) { this.resetAlbumForm(); document.getElementById('album-id').value=i; document.getElementById('album-caption').value=t; document.getElementById('album-img-url').value=iu; document.getElementById('album-cancel-btn').classList.remove('hidden'); document.getElementById('album-submit-btn').innerHTML='حفظ التعديل <i data-lucide="save" class="w-6 h-6 inline ml-1"></i>'; lucide.createIcons(); document.getElementById('album-img-type').value='url'; this.toggleAlbumImgType(); window.scrollTo(0,0); }
             async delAlbum(i) { confirm('حذف هذه الصورة نهائياً؟', async()=>await deleteDoc(doc(db,'album_images',i))); }
+
+            // --- Services Directory (NEW) ---
+            initSrv() {
+                this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'services'), orderBy('createdAt','desc')), s=>{ 
+                    const l=document.getElementById('srv-list'); l.innerHTML=''; 
+                    s.forEach(d=>{ 
+                        const v=d.data(); 
+                        l.innerHTML+=`<tr class="hover:bg-[var(--bg-surface-solid)] transition-colors"><td class="p-4 text-sm font-bold text-[var(--text-muted)]">${v.category}</td><td class="p-4 font-black text-amber-400 text-lg">${v.name}</td><td class="p-4 text-sm font-bold whitespace-normal leading-relaxed text-white min-w-[200px]">${v.details}</td><td class="p-4" dir="ltr"><div class="flex items-center justify-end gap-2"><span class="text-blue-400 font-bold text-sm">${v.phone}</span><a href="https://wa.me/20${v.phone.replace(/^0+/,'')}" target="_blank" class="text-[#25D366] bg-[#25D366]/10 p-1.5 rounded hover:bg-[#25D366] hover:text-white transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i></a><a href="tel:${v.phone}" class="text-blue-400 bg-blue-500/10 p-1.5 rounded hover:bg-blue-500 hover:text-white transition-colors"><i data-lucide="phone" class="w-4 h-4"></i></a></div></td><td class="p-4 admin-only text-center"><button onclick="app.admin.editSrv('${d.id}','${v.category}','${v.name.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.details.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.phone}')" class="text-cyan-400 bg-cyan-500/10 p-2 rounded-lg hover:bg-cyan-600 hover:text-white transition-all border border-cyan-500/30 shadow-sm ml-2"><i data-lucide="edit-3" class="w-4 h-4 inline"></i></button><button onclick="app.admin.delSrv('${d.id}')" class="text-rose-500 bg-rose-500/10 p-2 rounded-lg hover:bg-rose-600 hover:text-white transition-all border border-rose-500/30 shadow-sm"><i data-lucide="trash-2" class="w-4 h-4 inline"></i></button></td></tr>`; 
+                    }); 
+                    lucide.createIcons(); 
+                }));
+            }
+            async saveService(e) {
+                e.preventDefault(); const b=document.getElementById('srv-submit-btn'); b.disabled=true; b.innerHTML='<i data-lucide="loader-2" class="animate-spin w-5 h-5 text-white inline mr-2"></i> جاري الحفظ...'; lucide.createIcons();
+                try {
+                    const id = document.getElementById('srv-id').value, cat = document.getElementById('srv-cat').value, name = document.getElementById('srv-name').value, details = document.getElementById('srv-details').value, phone = document.getElementById('srv-phone').value;
+                    const data = { category: cat, name, details, phone };
+                    if(id) { await updateDoc(doc(db,'services',id), {...data, updatedAt: serverTimestamp()}); } else { await addDoc(collection(db,'services'), {...data, createdAt: serverTimestamp()}); }
+                    this.resetSrvForm(); toast('تم حفظ بيانات الخدمة بنجاح.', 'success');
+                } catch(er) { toast('حدث خطأ، تأكد من اتصالك أو إعدادات قاعدة البيانات.', 'error'); } finally { b.disabled=false; b.innerHTML='إضافة الدليل <i data-lucide="plus-circle" class="w-6 h-6 inline ml-1"></i>'; lucide.createIcons(); }
+            }
+            resetSrvForm() { document.getElementById('srv-form').reset(); document.getElementById('srv-id').value=''; document.getElementById('srv-cancel-btn').classList.add('hidden'); document.getElementById('srv-submit-btn').innerHTML='إضافة الدليل <i data-lucide="plus-circle" class="w-6 h-6 inline ml-1"></i>'; lucide.createIcons(); }
+            editSrv(id, cat, name, details, phone) { this.resetSrvForm(); document.getElementById('srv-id').value=id; document.getElementById('srv-cat').value=cat; document.getElementById('srv-name').value=name; document.getElementById('srv-details').value=details; document.getElementById('srv-phone').value=phone; document.getElementById('srv-cancel-btn').classList.remove('hidden'); document.getElementById('srv-submit-btn').innerHTML='حفظ التعديل <i data-lucide="save" class="w-6 h-6 inline ml-1"></i>'; lucide.createIcons(); window.scrollTo(0,0); }
+            async delSrv(id) { confirm('هل تريد بالتأكيد حذف هذه الخدمة من الدليل؟', async()=>await deleteDoc(doc(db,'services',id))); }
 
             // --- Finances ---
             initFin() {
@@ -1166,7 +1350,7 @@
                 this.loadCategoryLogs();
                 this.a.unsubs.push(this.a.safeSnapshot(collection(db,'financials/temporary_projects/projects'), s=>{ const sP=document.getElementById('sel-proj'); const v=sP.value; sP.innerHTML=''; s.forEach(d=>sP.add(new Option(d.data().name,d.id))); if(v&&[...sP.options].find(o=>o.value===v))sP.value=v; this.loadProject(); }));
                 this.a.unsubs.push(this.a.safeSnapshot(doc(db,'app_data','monthly_reminder'), d=>{ const dt=d.data()?.reminderDate; document.getElementById('monthly-date').value=dt||''; document.getElementById('monthly-alert').classList.toggle('hidden', dt!==new Date().toISOString().split('T')[0]); }));
-                this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'monthly_payments'),orderBy('name')), s=>{ const l=document.getElementById('list-monthly'); l.innerHTML=''; let t=0; s.forEach(d=>{t+=d.data().amount;l.innerHTML+=`<div class="flex justify-between items-center border-b border-[var(--border-color)] py-2 hover:bg-[var(--bg-surface-solid)] px-2 rounded-lg transition-colors"><span class="font-black text-sm text-white">${d.data().name}</span><div class="flex items-center gap-2"><span class="text-purple-400 font-black text-sm tracking-wider">${d.data().amount} <span class="text-xs">ج.م</span></span><button onclick="app.admin.editMonthly('${d.id}','${d.data().name.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/\n/g,"\\\\n").replace(/\r/g,"")}','${d.data().amount}')" class="bg-cyan-500/20 text-cyan-400 p-1.5 rounded-md hover:bg-cyan-500 hover:text-white transition-colors admin-only" title="تعديل الاشتراك"><i data-lucide="edit-3" class="w-4 h-4"></i></button><button onclick="app.admin.delMonthly('${d.id}')" class="bg-rose-500/20 text-rose-500 p-1.5 rounded-md hover:bg-rose-500 hover:text-white transition-colors admin-only" title="إزالة الاسم"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div>`;}); document.getElementById('bal-monthly-total').textContent=formatEGP(t); lucide.createIcons(); }));
+                this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'monthly_payments'),orderBy('name')), s=>{ const l=document.getElementById('list-monthly'); l.innerHTML=''; let t=0; s.forEach(d=>{t+=d.data().amount;l.innerHTML+=`<div class="flex justify-between items-center border-b border-[var(--border-color)] py-2 hover:bg-[var(--bg-surface-solid)] px-2 rounded-lg transition-colors"><span class="font-black text-sm text-white">${d.data().name}</span><div class="flex items-center gap-2"><span class="text-purple-400 font-black text-sm tracking-wider">${d.data().amount} <span class="text-xs">ج.م</span></span><button onclick="app.admin.editMonthly('${d.id}','${d.data().name}','${d.data().amount}')" class="bg-cyan-500/20 text-cyan-400 p-1.5 rounded-md hover:bg-cyan-500 hover:text-white transition-colors admin-only" title="تعديل الاشتراك"><i data-lucide="edit-3" class="w-4 h-4"></i></button><button onclick="app.admin.delMonthly('${d.id}')" class="bg-rose-500/20 text-rose-500 p-1.5 rounded-md hover:bg-rose-500 hover:text-white transition-colors admin-only" title="إزالة الاسم"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div>`;}); document.getElementById('bal-monthly-total').textContent=formatEGP(t); lucide.createIcons(); }));
             }
             loadCategoryLogs() { if(this.uc)this.uc(); this.uc=this.a.safeSnapshot(query(collection(db,`financials/categorized_donations/categories/${document.getElementById('sel-cat').value}/logs`),orderBy('timestamp','desc'),limit(15)), s=>{ const nm=document.getElementById('sel-cat').options[document.getElementById('sel-cat').selectedIndex].text; this.renL(document.getElementById('log-cat'),s.docs, `financials/categorized_donations/categories/${document.getElementById('sel-cat').value}`, nm); }); this.a.unsubs.push(this.uc); }
             loadProject() { 
@@ -1179,7 +1363,18 @@
                     const nm=document.getElementById('sel-proj').options[document.getElementById('sel-proj').selectedIndex].text;
                     this.renL(document.getElementById('log-proj'),s.docs, `financials/temporary_projects/projects/${id}`, nm); 
                     let tc=0; 
-                    s.docs.forEach(d=>{ const msg = d.data().message || ''; if (msg.includes('إضافة')) { const colonIndex = msg.indexOf(':'); const bracketIndex = msg.indexOf('('); if (colonIndex !== -1) { const end = bracketIndex !== -1 ? bracketIndex : msg.length; const valStr = msg.substring(colonIndex + 1, end).trim(); tc += pNum(valStr); } } }); 
+                    s.docs.forEach(d=>{
+                        const msg = d.data().message || '';
+                        if (msg.includes('إضافة')) {
+                            const colonIndex = msg.indexOf(':');
+                            const bracketIndex = msg.indexOf('(');
+                            if (colonIndex !== -1) {
+                                const end = bracketIndex !== -1 ? bracketIndex : msg.length;
+                                const valStr = msg.substring(colonIndex + 1, end).trim();
+                                tc += pNum(valStr);
+                            }
+                        }
+                    }); 
                     document.getElementById('bal-proj-total').textContent=formatEGP(tc);
                 }); 
                 this.a.unsubs.push(this.up1,this.up2); 
@@ -1189,19 +1384,25 @@
                 c.innerHTML=''; 
                 if(!ds.length) { c.innerHTML='<div class="text-center font-bold text-[var(--text-muted)] py-3 text-sm">لا توجد سجلات.</div>'; return;}
                 ds.forEach(d=>{ 
-                    const m=d.data(); const raw = m.message||''; const match = raw.match(/(إضافة|خصم):\s*([0-9.,٠-٩]+)\s*\((.*)\)/); let type='إضافة', amt=0, desc=raw;
-                    if(match) { type=match[1]; amt=pNum(match[2]); desc=match[3]; } else if(raw.includes('خصم')) {type='خصم'; amt=pNum(raw); } else { amt=pNum(raw); }
+                    const m=d.data(); 
+                    const raw = m.message||'';
+                    const match = raw.match(/(إضافة|خصم):\s*([0-9.,٠-٩]+)\s*\((.*)\)/);
+                    let type='إضافة', amt=0, desc=raw;
+                    if(match) { type=match[1]; amt=pNum(match[2]); desc=match[3]; }
+                    else if(raw.includes('خصم')) {type='خصم'; amt=pNum(raw); } else { amt=pNum(raw); }
+
                     const logPath = `${parentPath}/logs/${d.id}`;
-                    c.innerHTML+=`<div class="bg-[var(--bg-base)] p-3 rounded-xl mb-2 border border-[var(--border-color)] flex justify-between items-center shadow-sm hover:shadow-md transition-shadow"><div class="flex-1 pr-2 leading-relaxed border-l-2 ${type==='إضافة'?'border-emerald-500':'border-rose-500'}"><span class="block text-sm font-black mb-1 text-white">${raw}</span><span class="text-[var(--text-muted)] text-[10px] font-bold flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${m.timestamp?.toDate().toLocaleString('ar-EG')}</span></div><div class="flex flex-col sm:flex-row gap-1.5 admin-only mr-2"><button onclick="app.admin.editFullTx('${logPath}', '${parentPath}', '${type}', '${amt}', '${desc.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/\n/g,"\\\\n").replace(/\r/g,"")}')" class="text-cyan-400 bg-cyan-500/10 p-2 rounded-lg hover:bg-cyan-500 hover:text-white transition-colors" title="تعديل"><i data-lucide="edit-3" class="w-4 h-4"></i></button><button onclick="app.admin.delTx('${logPath}')" class="text-rose-500 bg-rose-500/10 p-2 rounded-lg hover:bg-rose-500 hover:text-white transition-colors" title="حذف"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div>`; 
+                    
+                    c.innerHTML+=`<div class="bg-[var(--bg-base)] p-3 rounded-xl mb-2 border border-[var(--border-color)] flex justify-between items-center shadow-sm hover:shadow-md transition-shadow"><div class="flex-1 pr-2 leading-relaxed border-l-2 ${type==='إضافة'?'border-emerald-500':'border-rose-500'}"><span class="block text-sm font-black mb-1 text-white">${raw}</span><span class="text-[var(--text-muted)] text-[10px] font-bold flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${m.timestamp?.toDate().toLocaleString('ar-EG')}</span></div><div class="flex flex-col sm:flex-row gap-1.5 admin-only mr-2"><button onclick="app.admin.editFullTx('${logPath}', '${parentPath}', '${type}', '${amt}', '${desc.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="text-cyan-400 bg-cyan-500/10 p-2 rounded-lg hover:bg-cyan-500 hover:text-white transition-colors" title="تعديل"><i data-lucide="edit-3" class="w-4 h-4"></i></button><button onclick="app.admin.delTx('${logPath}')" class="text-rose-500 bg-rose-500/10 p-2 rounded-lg hover:bg-rose-500 hover:text-white transition-colors" title="حذف"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div>`; 
                 }); 
                 lucide.createIcons();
             }
 
-            async transact(e, trg) { e.preventDefault(); const f=e.target; const desc=f.elements[0].value, amt=parseFloat(f.elements[1].value), op=f.dataset.op; if(!desc||!amt)return; let ref, nm; if(trg==='general'){ref=doc(db,'financials','general_expenses');nm='الخزينة العامة';}else if(trg==='category'){const id=document.getElementById('sel-cat').value;ref=doc(db,`financials/categorized_donations/categories/${id}`);nm=this.a.donCats[id];}else{const id=document.getElementById('sel-proj').value;ref=doc(db,`financials/temporary_projects/projects/${id}`);nm=document.getElementById('sel-proj').options[document.getElementById('sel-proj').selectedIndex].text;} try{ const sn=await getDoc(ref); if(op==='sub'&&amt>(sn.data()?.balance||0)) return toast('رصيد غير كاف للعملية!','error'); const bt=writeBatch(db); let ex={}; if(trg==='category')ex.name=nm; bt.set(ref, {balance:increment(op==='add'?amt:-amt), ...ex}, {merge:true}); bt.set(doc(collection(ref,'logs')),{message:`${op==='add'?'إضافة':'خصم'}: ${amt} (${desc})`,timestamp:serverTimestamp()}); await bt.commit(); toast('تم تسجيل العملية','success'); f.reset(); }catch(err){toast('فشلت العملية','error');} }
+            async transact(e, trg) { e.preventDefault(); const f=e.target; const desc=f.elements[0].value, amt=parseFloat(f.elements[1].value), op=f.dataset.op; if(!desc||!amt)return; let ref, nm; if(trg==='general'){ref=doc(db,'financials','general_expenses');nm='الخزينة العامة';}else if(trg==='category'){const id=document.getElementById('sel-cat').value;ref=doc(db,`financials/categorized_donations/categories/${id}`);nm=this.a.donCats[id];}else{const id=document.getElementById('sel-proj').value;ref=doc(db,`financials/temporary_projects/projects/${id}`);nm=document.getElementById('sel-proj').options[document.getElementById('sel-proj').selectedIndex].text;} try{ const sn=await getDoc(ref); if(op==='sub'&&amt>(sn.data()?.balance||0)) return toast('الرصيد المتوفر غير كافٍ لإتمام الخصم!','error'); const bt=writeBatch(db); let ex={}; if(trg==='category')ex.name=nm; bt.set(ref, {balance:increment(op==='add'?amt:-amt), ...ex}, {merge:true}); bt.set(doc(collection(ref,'logs')),{message:`${op==='add'?'إضافة':'خصم'}: ${amt} (${desc})`,timestamp:serverTimestamp()}); await bt.commit(); toast('تم تسجيل العملية','success'); f.reset(); }catch(err){toast('فشلت العملية','error');} }
             async createProject() { const {value:n}=await Swal.fire({title:'<span style="font-family:Cairo;font-weight:900;font-size:1.5rem;color:#10b981;">مشروع خيري جديد</span>',input:'text',inputPlaceholder:'اكتب اسم المشروع هنا...',background:'var(--bg-surface-solid)',color:'var(--text-main)',confirmButtonText:'إنشاء واعتماد',confirmButtonColor:'#10b981'}); if(n) await addDoc(collection(db,'financials/temporary_projects/projects'),{name:n,balance:0,createdAt:serverTimestamp()}); }
             async editProjectName() { const sel=document.getElementById('sel-proj'); const id=sel.value; if(!id) return; const cNm=sel.options[sel.selectedIndex].text; const {value:n}=await Swal.fire({title:'<span style="font-family:Cairo;font-weight:900;font-size:1.5rem;color:#06b6d4;">تعديل اسم المشروع</span>',input:'text',inputValue:cNm,background:'var(--bg-surface-solid)',color:'var(--text-main)',confirmButtonText:'حفظ التعديل',confirmButtonColor:'#0891b2',showCancelButton:true,cancelButtonText:'إلغاء'}); if(n && n.trim()!=='' && n!==cNm) { await updateDoc(doc(db,`financials/temporary_projects/projects/${id}`),{name:n.trim()}); toast('تم التعديل بنجاح', 'success'); } }
             async deleteProject() { const id=document.getElementById('sel-proj').value; if(id) confirm('حذف المشروع بجميع سجلاته نهائياً؟', async()=>await deleteDoc(doc(db,`financials/temporary_projects/projects/${id}`))); }
-            async addMonthly(e) { e.preventDefault(); const f=e.target; await addDoc(collection(db,'monthly_payments'),{name:f.elements[0].value,amount:parseFloat(f.elements[1].value),createdAt:serverTimestamp()}); f.reset(); toast('تم الإضافة', 'success'); }
+            async addMonthly(e) { e.preventDefault(); const f=e.target; await addDoc(collection(db,'monthly_payments'),{name:f.elements[0].value,amount:parseFloat(f.elements[1].value),createdAt:serverTimestamp()}); f.reset(); toast('تم الإضافة للقائمة المجدولة', 'success'); }
             async delMonthly(id) { confirm('إزالة من القائمة؟', async()=>await deleteDoc(doc(db,'monthly_payments',id))); }
             async editMonthly(id, oldName, oldAmt) {
                 const { value: v } = await Swal.fire({ title: '<span style="font-family:Cairo;font-weight:900;font-size:1.5rem;color:#06b6d4;">تحديث بيانات الاشتراك</span>', html: `<label style="display:block;text-align:right;font-weight:bold;margin-bottom:5px;font-size:1rem;">الاسم:</label><input id="s-n" class="swal2-input" style="font-family:Cairo;font-weight:900;font-size:1.1rem;width:90%;margin-top:0;" value="${oldName}"><label style="display:block;text-align:right;font-weight:bold;margin-top:10px;margin-bottom:5px;font-size:1rem;">المبلغ:</label><input id="s-a" type="number" step="0.01" style="font-family:Cairo;font-weight:900;font-size:1.2rem;width:90%;margin-top:0;" class="swal2-input text-center text-emerald-500" value="${oldAmt}">`, focusConfirm: false, background: 'var(--bg-surface-solid)', color: 'var(--text-main)', showCancelButton: true, confirmButtonText: '<span style="font-weight:900;font-size:1rem;">حفظ</span>', cancelButtonText: '<span style="font-weight:900;font-size:1rem;">تراجع</span>', confirmButtonColor: '#0891b2', preConfirm: () => [document.getElementById('s-n').value, document.getElementById('s-a').value] });
@@ -1225,7 +1426,7 @@
                 let ti=0,to=0; f.forEach(x=>{if(x.ty==='إيداع')ti+=x.am;if(x.ty==='صرف')to+=x.am;}); document.getElementById('rep-tot-in').textContent=formatEGP(ti); document.getElementById('rep-tot-out').textContent=formatEGP(to);
                 const tb=document.getElementById('rep-table'); tb.innerHTML='';
                 if(f.length===0){ tb.innerHTML='<tr><td colspan="5" class="text-center p-6 font-bold text-sm text-[var(--text-muted)]">لا نتائج.</td></tr>'; return; }
-                f.slice(0,200).forEach(x=>{ tb.innerHTML+=`<tr><td class="p-4 text-sm font-bold" dir="ltr">${x.dt?.toLocaleString('ar-EG')||'-'}</td><td class="p-4 font-black text-lg ${x.ty==='إيداع'?'text-emerald-400':'text-rose-400'}">${x.am}</td><td class="p-4 text-base font-black ${x.ty==='إيداع'?'text-emerald-400':'text-rose-400'}">${x.ty}</td><td class="p-4 whitespace-normal min-w-[250px] text-sm leading-relaxed text-white">${x.ds} <div class="mt-2 block"><button onclick="app.admin.editFullTx('${x.fp}', '${x.prnt}', '${x.ty==='إيداع'?'إضافة':'خصم'}', '${x.am}', '${x.ds.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/\n/g,"\\\\n").replace(/\r/g,"")}')" class="text-cyan-400 mr-2 p-1.5 bg-cyan-500/20 rounded-lg hover:bg-cyan-500 hover:text-white transition-colors admin-only font-bold text-[10px]" title="تعديل جذري للمعاملة"><i data-lucide="edit-3" class="w-3 h-3 inline mr-1"></i> تعديل</button><button onclick="app.admin.delTx('${x.fp}')" class="text-rose-400 p-1.5 bg-rose-500/20 rounded-lg hover:bg-rose-500 hover:text-white transition-colors admin-only font-bold text-[10px]" title="حذف"><i data-lucide="trash-2" class="w-3 h-3 inline mr-1"></i> إزالة</button></div></td><td class="p-4 text-sm font-black text-blue-300">${x.sn}<br><span class="text-xs font-bold text-[var(--text-muted)] inline-block mt-1 bg-blue-900/40 px-2 py-0.5 rounded-full">${x.st}</span></td></tr>`; }); lucide.createIcons();
+                f.slice(0,200).forEach(x=>{ tb.innerHTML+=`<tr><td class="p-4 text-sm font-bold" dir="ltr">${x.dt?.toLocaleString('ar-EG')||'-'}</td><td class="p-4 font-black text-lg ${x.ty==='إيداع'?'text-emerald-400':'text-rose-400'}">${x.am}</td><td class="p-4 text-base font-black ${x.ty==='إيداع'?'text-emerald-400':'text-rose-400'}">${x.ty}</td><td class="p-4 whitespace-normal min-w-[250px] text-sm leading-relaxed text-white">${x.ds} <div class="mt-2 block"><button onclick="app.admin.editFullTx('${x.fp}', '${x.prnt}', '${x.ty==='إيداع'?'إضافة':'خصم'}', '${x.am}', '${x.ds.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="text-cyan-400 mr-2 p-1.5 bg-cyan-500/20 rounded-lg hover:bg-cyan-500 hover:text-white transition-colors admin-only font-bold text-[10px]" title="تعديل جذري للمعاملة"><i data-lucide="edit-3" class="w-3 h-3 inline mr-1"></i> تعديل</button><button onclick="app.admin.delTx('${x.fp}')" class="text-rose-400 p-1.5 bg-rose-500/20 rounded-lg hover:bg-rose-500 hover:text-white transition-colors admin-only font-bold text-[10px]" title="حذف"><i data-lucide="trash-2" class="w-3 h-3 inline mr-1"></i> إزالة</button></div></td><td class="p-4 text-sm font-black text-blue-300">${x.sn}<br><span class="text-xs font-bold text-[var(--text-muted)] inline-block mt-1 bg-blue-900/40 px-2 py-0.5 rounded-full">${x.st}</span></td></tr>`; }); lucide.createIcons();
             }
 
             editFullTx(logPath, parentPath, oldType, oldAmt, oldDesc) {
@@ -1259,7 +1460,7 @@
                 this.a.unsubs.push(this.a.safeSnapshot(doc(db,'app_data','news_ticker'), d=>document.getElementById('por-ticker').value=d.data()?.text||''));
                 this.a.unsubs.push(this.a.safeSnapshot(doc(db,'app_data','settings'), d=>document.getElementById('por-speed').value=d.data()?.slideshowDuration||15));
             }
-            ldPor() { if(this.up)this.up(); document.getElementById('por-sec-title').innerHTML=`محتوى قسم: <span class="text-white">${this.a.portalSecs[this.pSec].t}</span>`; this.up=this.a.safeSnapshot(query(collection(db,`portal_sections/${this.pSec}/topics`),orderBy('createdAt','desc')), s=>{ const l=document.getElementById('por-list'); l.innerHTML=''; s.forEach(d=>{ const v=d.data(); l.innerHTML+=`<div class="bg-[var(--bg-base)] p-5 rounded-2xl flex flex-col sm:flex-row justify-between gap-4 border border-[var(--border-color)] shadow-md hover:border-emerald-500/50 transition-colors"><div class="flex-1"><h4 class="font-black text-lg mb-2 text-emerald-300 leading-snug">${v.title}</h4><p class="text-sm font-bold text-white leading-relaxed">${v.description}</p></div><div class="flex sm:flex-col gap-2 admin-only justify-center sm:justify-start min-w-[50px]"><button onclick="app.admin.editPor('${d.id}','${v.title.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/\n/g,"\\\\n").replace(/\r/g,"")}','${v.description.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/\n/g,"\\\\n").replace(/\r/g,"")}')" class="text-cyan-400 bg-cyan-500/10 hover:bg-cyan-600 hover:text-white p-2.5 rounded-xl transition-all shadow-sm border border-cyan-500/30" title="تعديل المحتوى"><i data-lucide="edit-3" class="w-5 h-5"></i></button><button onclick="app.admin.delPor('${d.id}')" class="text-rose-500 bg-rose-500/10 hover:bg-rose-600 hover:text-white p-2.5 rounded-xl transition-all shadow-sm border border-rose-500/30" title="إزالة الموضوع"><i data-lucide="trash-2" class="w-5 h-5"></i></button></div></div>`; }); lucide.createIcons(); }); this.a.unsubs.push(this.up); }
+            ldPor() { if(this.up)this.up(); document.getElementById('por-sec-title').innerHTML=`محتوى قسم: <span class="text-white">${this.a.portalSecs[this.pSec].t}</span>`; this.up=this.a.safeSnapshot(query(collection(db,`portal_sections/${this.pSec}/topics`),orderBy('createdAt','desc')), s=>{ const l=document.getElementById('por-list'); l.innerHTML=''; s.forEach(d=>{ const v=d.data(); l.innerHTML+=`<div class="bg-[var(--bg-base)] p-5 rounded-2xl flex flex-col sm:flex-row justify-between gap-4 border border-[var(--border-color)] shadow-md hover:border-emerald-500/50 transition-colors"><div class="flex-1"><h4 class="font-black text-lg mb-2 text-emerald-300 leading-snug">${v.title}</h4><p class="text-sm font-bold text-white leading-relaxed">${v.description}</p></div><div class="flex sm:flex-col gap-2 admin-only justify-center sm:justify-start min-w-[50px]"><button onclick="app.admin.editPor('${d.id}','${v.title.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.description.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="text-cyan-400 bg-cyan-500/10 hover:bg-cyan-600 hover:text-white p-2.5 rounded-xl transition-all shadow-sm border border-cyan-500/30" title="تعديل المحتوى"><i data-lucide="edit-3" class="w-5 h-5"></i></button><button onclick="app.admin.delPor('${d.id}')" class="text-rose-500 bg-rose-500/10 hover:bg-rose-600 hover:text-white p-2.5 rounded-xl transition-all shadow-sm border border-rose-500/30" title="إزالة الموضوع"><i data-lucide="trash-2" class="w-5 h-5"></i></button></div></div>`; }); lucide.createIcons(); }); this.a.unsubs.push(this.up); }
             showTopicForm() { document.getElementById('por-form').classList.remove('hidden'); document.getElementById('por-id').value=''; document.getElementById('por-title').value=''; document.getElementById('por-desc').value=''; }
             hideTopicForm() { document.getElementById('por-form').classList.add('hidden'); }
             editPor(i,t,d) { this.showTopicForm(); document.getElementById('por-id').value=i; document.getElementById('por-title').value=t; document.getElementById('por-desc').value=d; }
@@ -1269,7 +1470,7 @@
             async saveSpeed() { await setDoc(doc(db,'app_data','settings'),{slideshowDuration:parseInt(document.getElementById('por-speed').value)||15},{merge:true}); toast('تم الحفظ', 'success'); }
 
             // --- Events ---
-            initEv() { this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'events'),orderBy('createdAt','desc')), s=>{ const l=document.getElementById('ev-list'); l.innerHTML=''; s.forEach(d=>{ const v=d.data(); l.innerHTML+=`<div class="bg-[var(--bg-base)] p-5 rounded-2xl border border-[var(--border-color)] flex flex-col shadow-lg hover:shadow-[0_10px_20px_rgba(16,185,129,0.2)] transition-shadow"><div class="flex justify-between items-start mb-3"><h4 class="font-black text-lg line-clamp-2 flex-1 text-white leading-snug">${v.title}</h4><div class="flex gap-2 admin-only mr-2"><button onclick="app.admin.editEv('${d.id}','${v.url}','${v.title.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/\n/g,"\\\\n").replace(/\r/g,"")}','${(v.description||'').replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/\n/g,"\\\\n").replace(/\r/g,"")}','${v.imageUrl||''}')" class="text-cyan-400 bg-cyan-900/40 p-2 rounded-lg hover:bg-cyan-500 hover:text-white transition-colors border border-cyan-500/50"><i data-lucide="edit-3" class="w-4 h-4"></i></button><button onclick="app.admin.delEv('${d.id}')" class="text-rose-400 bg-rose-900/40 p-2 rounded-lg hover:bg-rose-500 hover:text-white transition-colors border border-rose-500/50"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div><p class="text-xs font-bold text-blue-400 truncate mb-3 bg-blue-900/20 px-2 py-1 rounded-md" dir="ltr"><i data-lucide="link" class="w-3 h-3 inline mr-1 opacity-50"></i>${v.url}</p><p class="text-sm font-bold text-[var(--text-muted)] line-clamp-3 leading-relaxed">${v.description||''}</p></div>`; }); lucide.createIcons(); })); }
+            initEv() { this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'events'),orderBy('createdAt','desc')), s=>{ const l=document.getElementById('ev-list'); l.innerHTML=''; s.forEach(d=>{ const v=d.data(); l.innerHTML+=`<div class="bg-[var(--bg-base)] p-5 rounded-2xl border border-[var(--border-color)] flex flex-col shadow-lg hover:shadow-[0_10px_20px_rgba(16,185,129,0.2)] transition-shadow"><div class="flex justify-between items-start mb-3"><h4 class="font-black text-lg line-clamp-2 flex-1 text-white leading-snug">${v.title}</h4><div class="flex gap-2 admin-only mr-2"><button onclick="app.admin.editEv('${d.id}','${v.url}','${v.title.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${(v.description||'').replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.imageUrl||''}')" class="text-cyan-400 bg-cyan-900/40 p-2 rounded-lg hover:bg-cyan-500 hover:text-white transition-colors border border-cyan-500/50"><i data-lucide="edit-3" class="w-4 h-4"></i></button><button onclick="app.admin.delEv('${d.id}')" class="text-rose-400 bg-rose-900/40 p-2 rounded-lg hover:bg-rose-500 hover:text-white transition-colors border border-rose-500/50"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div><p class="text-xs font-bold text-blue-400 truncate mb-3 bg-blue-900/20 px-2 py-1 rounded-md" dir="ltr"><i data-lucide="link" class="w-3 h-3 inline mr-1 opacity-50"></i>${v.url}</p><p class="text-sm font-bold text-[var(--text-muted)] line-clamp-3 leading-relaxed">${v.description||''}</p></div>`; }); lucide.createIcons(); })); }
             toggleEvImgType() { const t=document.getElementById('ev-img-type').value; document.getElementById('ev-img-url').classList.toggle('hidden',t==='file'); document.getElementById('ev-img-file').classList.toggle('hidden',t==='url'); }
             async saveEvent(e) { e.preventDefault(); const b=document.getElementById('ev-submit-btn'); b.disabled=true; b.innerHTML='<i data-lucide="loader-2" class="animate-spin w-5 h-5 text-white inline mr-2"></i> جاري معالجة الرفع...'; lucide.createIcons(); try{ const i=document.getElementById('ev-id').value, u=document.getElementById('ev-url').value, t=document.getElementById('ev-title').value, d=document.getElementById('ev-desc').value, tp=document.getElementById('ev-img-type').value; let iu=document.getElementById('ev-img-url').value; if(tp==='file') { const fi=document.getElementById('ev-img-file'); if(fi.files.length>0) iu=await uploadImg(fi.files[0]); } const dt={url:u,title:t,description:d,imageUrl:iu}; if(i) await updateDoc(doc(db,'events',i),{...dt,updatedAt:serverTimestamp()}); else await addDoc(collection(db,'events'),{...dt,createdAt:serverTimestamp()}); this.resetEvForm(); toast('عمل عظيم! تمت إضافة الفعالية للأرشيف بنجاح.', 'success'); }catch(er){toast('فشلت العملية، تأكد من اتصالك بالنت وجرب ثانية', 'error');}finally{b.disabled=false;b.innerHTML='نشر الفعالية <i data-lucide="upload-cloud" class="w-5 h-5 inline ml-1"></i>';lucide.createIcons();} }
             resetEvForm() { document.getElementById('ev-form').reset(); document.getElementById('ev-id').value=''; document.getElementById('ev-cancel-btn').classList.add('hidden'); document.getElementById('ev-img-type').value='url'; this.toggleEvImgType(); }
@@ -1309,7 +1510,12 @@
                 this.a.unsubs.push(this.a.safeSnapshot(query(collection(bDb,`${BB_PATH}/pendingDonors`)), s=>{ const l=document.getElementById('bb-pend-list'); l.innerHTML=''; s.forEach(d=>{ const v=d.data(); l.innerHTML+=`<div class="bg-[var(--bg-base)] p-5 rounded-2xl border border-[var(--border-color)] shadow-md"><h4 class="font-black text-lg text-white mb-2">${v.name} <span class="text-rose-500 text-base ml-2 border border-rose-500/50 rounded-lg px-2 py-1 shadow-inner">${v.bloodType}</span></h4><p class="text-sm font-bold mt-2 font-mono text-blue-300 bg-blue-900/30 p-2 rounded-lg inline-block" dir="ltr"><i data-lucide="phone-call" class="inline w-4 h-4 mr-1"></i>${v.phone}</p><div class="flex gap-2 mt-5 admin-only"><button onclick="app.admin.apprBb('${d.id}')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold py-2 rounded-xl shadow-sm border border-emerald-400">اعتماد ✔️</button><button onclick="app.admin.rejBb('${d.id}')" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold py-2 rounded-xl shadow-sm border border-rose-400">رفض ✖️</button></div></div>`; }); lucide.createIcons(); }));
                 this.a.unsubs.push(this.a.safeSnapshot(query(collection(bDb,`${BB_PATH}/donors`)), s=>{ 
                     const l=document.getElementById('bb-all-list'); l.innerHTML=''; 
-                    s.forEach(d=>{ const v=d.data(); const a=v.availability==='available'; l.innerHTML+=`<tr><td class="p-4 font-black text-base text-white">${v.name}</td><td class="p-4 font-black text-rose-500 text-center text-xl drop-shadow-sm">${v.bloodType}</td><td class="p-4 font-bold font-mono text-sm text-blue-300" dir="ltr">${v.phone}</td><td class="p-4 text-center"><span class="text-xs font-bold px-3 py-1.5 rounded-full border ${a?'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.3)]':'bg-amber-500/20 text-amber-400 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.3)]'}"><i data-lucide="${a?'check-circle':'plane'}" class="w-4 h-4 inline mr-1"></i> ${a?'متاح':'مسافر'}</span></td><td class="p-4 admin-only text-center"><button onclick="app.admin.openEditBb('${d.id}','${v.name.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/\n/g,"\\\\n").replace(/\r/g,"")}','${v.age||''}','${v.bloodType}','${v.phone}','${v.availability}')" class="text-cyan-400 bg-[var(--bg-surface-solid)] px-3 py-2 rounded-xl hover:bg-cyan-600 hover:text-white ml-2 transition-colors border border-[var(--border-color)] shadow-sm font-bold text-sm" title="تعديل"><i data-lucide="edit-3" class="w-4 h-4 inline ml-1"></i> تعديل</button><button onclick="app.admin.delBb('${d.id}')" class="text-rose-500 bg-[var(--bg-surface-solid)] px-3 py-2 rounded-xl hover:bg-rose-600 hover:text-white transition-colors border border-[var(--border-color)] shadow-sm font-bold text-sm" title="إزالة"><i data-lucide="trash-2" class="w-4 h-4 inline ml-1"></i> حذف</button></td></tr>`; }); lucide.createIcons(); 
+                    s.forEach(d=>{ 
+                        const v=d.data(); 
+                        const a=v.availability==='available'; 
+                        l.innerHTML+=`<tr><td class="p-4 font-black text-base text-white">${v.name}</td><td class="p-4 font-black text-rose-500 text-center text-xl drop-shadow-sm">${v.bloodType}</td><td class="p-4 font-bold font-mono text-sm text-blue-300" dir="ltr">${v.phone}</td><td class="p-4 text-center"><span class="text-xs font-bold px-3 py-1.5 rounded-full border ${a?'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.3)]':'bg-amber-500/20 text-amber-400 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.3)]'}"><i data-lucide="${a?'check-circle':'plane'}" class="w-4 h-4 inline mr-1"></i> ${a?'متاح':'مسافر'}</span></td><td class="p-4 admin-only text-center"><button onclick="app.admin.openEditBb('${d.id}','${v.name.replace(/'/g,"\\'")}','${v.age||''}','${v.bloodType}','${v.phone}','${v.availability}')" class="text-cyan-400 bg-[var(--bg-surface-solid)] px-3 py-2 rounded-xl hover:bg-cyan-600 hover:text-white ml-2 transition-colors border border-[var(--border-color)] shadow-sm font-bold text-sm" title="تعديل"><i data-lucide="edit-3" class="w-4 h-4 inline ml-1"></i> تعديل</button><button onclick="app.admin.delBb('${d.id}')" class="text-rose-500 bg-[var(--bg-surface-solid)] px-3 py-2 rounded-xl hover:bg-rose-600 hover:text-white transition-colors border border-[var(--border-color)] shadow-sm font-bold text-sm" title="إزالة"><i data-lucide="trash-2" class="w-4 h-4 inline ml-1"></i> حذف</button></td></tr>`; 
+                    }); 
+                    lucide.createIcons(); 
                 }));
             }
             async saveBbMarquee(e) { e.preventDefault(); await setDoc(doc(bDb,`${BB_PATH}/config/marquee`),{text:document.getElementById('bb-marq-inp').value}); toast('تم التحديث', 'success'); }
