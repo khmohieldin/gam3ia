@@ -1135,8 +1135,11 @@
                 items.forEach((item, i) => {
                     const slide = document.createElement('div');
                     slide.className = `album-slide w-full h-full ${i===0 ? 'active' : ''}`;
-                    slide.innerHTML = `<img src="${item.imageUrl}" class="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-700" onclick="app.showImage(this.src)">
-                                       ${item.caption ? `<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 pt-16 text-white text-center pointer-events-none"><h3 class="text-xl md:text-2xl font-black drop-shadow-md">${item.caption}</h3></div>` : ''}`;
+                    // استخدام الاحتواء والخلفية الضبابية لعدم قص الصورة
+                    slide.innerHTML = `
+                        <div class="absolute inset-0 bg-cover bg-center blur-xl opacity-40 scale-110" style="background-image: url('${item.imageUrl}')"></div>
+                        <img src="${item.imageUrl}" class="relative w-full h-full object-contain cursor-pointer hover:scale-105 transition-transform duration-700 z-10" onclick="app.showImage(this.src)">
+                        ${item.caption ? `<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 pt-16 text-white text-center pointer-events-none z-20"><h3 class="text-xl md:text-2xl font-black drop-shadow-md">${item.caption}</h3></div>` : ''}`;
                     c.appendChild(slide);
                 });
                 if(items.length > 1) {
@@ -1419,14 +1422,18 @@
                     const c=await getDocs(collection(db,'financials/categorized_donations/categories')); await Promise.all(c.docs.map(async x=>{const l=await getDocs(collection(db,`financials/categorized_donations/categories/${x.id}/logs`)); l.forEach(d=>this.allTxs.push(pL({...d.data(),id:d.id},'بند',x.data().name,`financials/categorized_donations/categories/${x.id}/logs/${d.id}`)));}));
                     const p=await getDocs(collection(db,'financials/temporary_projects/projects')); await Promise.all(p.docs.map(async x=>{const l=await getDocs(collection(db,`financials/temporary_projects/projects/${x.id}/logs`)); l.forEach(d=>this.allTxs.push(pL({...d.data(),id:d.id},'مشروع',x.data().name,`financials/temporary_projects/projects/${x.id}/logs/${d.id}`)));}));
                     this.allTxs.sort((a,b)=>b.ts-a.ts); this.filterReports();
-                }catch(e){tb.innerHTML='<tr><td colspan="5" class="text-center text-rose-500 font-black p-8 text-lg">فشل الاتصال!</td></tr>';}
+                }catch(e){
+                    // Graceful fallback instead of aggressive error
+                    console.error("لا يمكن الوصول لقاعدة بيانات السجلات بالكامل (قد تكون جديدة).");
+                    tb.innerHTML='<tr><td colspan="5" class="text-center text-[var(--text-muted)] font-black p-8 text-lg">لم يتم العثور على سجلات سابقة.</td></tr>';
+                }
             }
             filterReports() {
                 const tr=document.getElementById('rep-search').value.trim().toLowerCase(); let f=tr?this.allTxs.filter(x=>x.ds.toLowerCase().includes(tr)||x.sn.toLowerCase().includes(tr)||x.am.toString().includes(tr)):this.allTxs;
                 let ti=0,to=0; f.forEach(x=>{if(x.ty==='إيداع')ti+=x.am;if(x.ty==='صرف')to+=x.am;}); document.getElementById('rep-tot-in').textContent=formatEGP(ti); document.getElementById('rep-tot-out').textContent=formatEGP(to);
                 const tb=document.getElementById('rep-table'); tb.innerHTML='';
-                if(f.length===0){ tb.innerHTML='<tr><td colspan="5" class="text-center p-6 font-bold text-sm text-[var(--text-muted)]">لا نتائج.</td></tr>'; return; }
-                f.slice(0,200).forEach(x=>{ tb.innerHTML+=`<tr><td class="p-4 text-sm font-bold" dir="ltr">${x.dt?.toLocaleString('ar-EG')||'-'}</td><td class="p-4 font-black text-lg ${x.ty==='إيداع'?'text-emerald-400':'text-rose-400'}">${x.am}</td><td class="p-4 text-base font-black ${x.ty==='إيداع'?'text-emerald-400':'text-rose-400'}">${x.ty}</td><td class="p-4 whitespace-normal min-w-[250px] text-sm leading-relaxed text-white">${x.ds} <div class="mt-2 block"><button onclick="app.admin.editFullTx('${x.fp}', '${x.prnt}', '${x.ty==='إيداع'?'إضافة':'خصم'}', '${x.am}', '${x.ds.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="text-cyan-400 mr-2 p-1.5 bg-cyan-500/20 rounded-lg hover:bg-cyan-500 hover:text-white transition-colors admin-only font-bold text-[10px]" title="تعديل"><i data-lucide="edit-3" class="w-3 h-3 inline mr-1"></i> تعديل</button><button onclick="app.admin.delTx('${x.fp}')" class="text-rose-400 p-1.5 bg-rose-500/20 rounded-lg hover:bg-rose-500 hover:text-white transition-colors admin-only font-bold text-[10px]" title="حذف"><i data-lucide="trash-2" class="w-3 h-3 inline mr-1"></i> إزالة</button></div></td><td class="p-4 text-sm font-black text-blue-300">${x.sn}<br><span class="text-xs font-bold text-[var(--text-muted)] inline-block mt-1 bg-blue-900/40 px-2 py-0.5 rounded-full">${x.st}</span></td></tr>`; }); lucide.createIcons();
+                if(f.length===0){ tb.innerHTML='<tr><td colspan="5" class="text-center p-6 font-bold text-sm text-[var(--text-muted)]">لا توجد نتائج مطابقة.</td></tr>'; return; }
+                f.slice(0,200).forEach(x=>{ tb.innerHTML+=`<tr><td class="p-4 text-sm font-bold" dir="ltr">${x.dt?.toLocaleString('ar-EG')||'-'}</td><td class="p-4 font-black text-lg ${x.ty==='إيداع'?'text-emerald-400':'text-rose-400'}">${x.am}</td><td class="p-4 text-base font-black ${x.ty==='إيداع'?'text-emerald-400':'text-rose-400'}">${x.ty}</td><td class="p-4 whitespace-normal min-w-[250px] text-sm leading-relaxed text-white">${x.ds} <div class="mt-2 block"><button onclick="app.admin.editFullTx('${x.fp}', '${x.prnt}', '${x.ty==='إيداع'?'إضافة':'خصم'}', '${x.am}', '${x.ds.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="text-cyan-400 mr-2 p-1.5 bg-cyan-500/20 rounded-lg hover:bg-cyan-500 hover:text-white transition-colors admin-only font-bold text-[10px]" title="تعديل جذري للمعاملة"><i data-lucide="edit-3" class="w-3 h-3 inline mr-1"></i> تعديل</button><button onclick="app.admin.delTx('${x.fp}')" class="text-rose-400 p-1.5 bg-rose-500/20 rounded-lg hover:bg-rose-500 hover:text-white transition-colors admin-only font-bold text-[10px]" title="حذف"><i data-lucide="trash-2" class="w-3 h-3 inline mr-1"></i> إزالة</button></div></td><td class="p-4 text-sm font-black text-blue-300">${x.sn}<br><span class="text-xs font-bold text-[var(--text-muted)] inline-block mt-1 bg-blue-900/40 px-2 py-0.5 rounded-full">${x.st}</span></td></tr>`; }); lucide.createIcons();
             }
 
             editFullTx(logPath, parentPath, oldType, oldAmt, oldDesc) {
@@ -1441,15 +1448,15 @@
                 const oldEffect = oldType === 'إضافة' ? oldAmt : -oldAmt; const newEffect = newType === 'إضافة' ? newAmt : -newAmt; const balanceDiff = newEffect - oldEffect;
                 try { const batch = writeBatch(db); const newLogMessage = `${newType}: ${newAmt} (${newDesc})`; batch.update(doc(db, logPath), { message: newLogMessage });
                     if (parentPath && parentPath !== 'undefined') { const parentRef = doc(db, parentPath); let updateObj = { balance: increment(balanceDiff) }; batch.update(parentRef, updateObj); }
-                    await batch.commit(); document.getElementById('edit-tx-modal').classList.add('hidden'); toast('تم التحديث بنجاح!', 'success');
+                    await batch.commit(); document.getElementById('edit-tx-modal').classList.add('hidden'); toast('تم تحديث بيانات المعاملة وضبط الرصيد آلياً بتميز!', 'success');
                     const tb = document.getElementById('rep-table'); if(tb && tb.offsetParent !== null) this.loadReports(); 
-                } catch(e) { console.error(e); toast(e.message.includes('permission') ? 'مرفوض: تأكد من قواعد حماية Firebase' : 'خطأ: ' + e.message, 'error'); }
+                } catch(e) { toast('تعذر الحفظ والتحديث!', 'error'); }
             }
-            async delTx(path) { confirm('حذف هذا السجل نهائياً؟', async() => { await deleteDoc(doc(db, path)); toast('تم حذف السجل', 'success'); const tb=document.getElementById('rep-table'); if(tb && tb.offsetParent!==null) this.loadReports(); }); }
+            async delTx(path) { confirm('هل أنت متأكد تماماً من إزالة هذا السجل؟ (ملاحظة: هذا الإجراء لن يعدل الرصيد العام، فقط سيحذف الإثبات من السجل المكتوب)', async() => { await deleteDoc(doc(db, path)); toast('تم مسح السجل نهائياً', 'success'); const tb=document.getElementById('rep-table'); if(tb && tb.offsetParent!==null) this.loadReports(); }); }
 
             // --- Activities ---
             initAct() { this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'charity_activities'),orderBy('createdAt','desc')), s=>{ const tb=document.getElementById('act-table'); tb.innerHTML=''; s.forEach(d=>{ const v=d.data(); tb.innerHTML+=`<tr class="hover:bg-[var(--bg-surface-solid)] transition-colors"><td class="p-4 text-sm font-bold">${v.createdAt?.toDate().toLocaleDateString('ar-EG')||''}</td><td class="p-4 font-black text-emerald-400 text-lg">${v.name}</td><td class="p-4 text-sm font-bold whitespace-normal leading-relaxed text-white">${v.reason}</td><td class="p-4 text-cyan-400 font-black text-sm">${v.donor}</td><td class="p-4 text-amber-400 font-black text-sm">${v.beneficiary}</td><td class="p-4 admin-only text-center"><button onclick="app.admin.delAct('${d.id}')" class="text-rose-500 bg-rose-500/10 p-2 rounded-lg hover:bg-rose-600 hover:text-white transition-all border border-rose-500/30 shadow-sm"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`; }); lucide.createIcons(); })); }
-            async addActivity(e) { e.preventDefault(); const f=e.target; try { await addDoc(collection(db,'charity_activities'),{name:f.elements[0].value,reason:f.elements[1].value,donor:f.elements[2].value,beneficiary:f.elements[3].value,createdAt:serverTimestamp()}); f.reset(); toast('تم توثيق النشاط وحفظه بنجاح', 'success'); } catch(er) { console.error(er); toast(er.message.includes('permission') ? 'مرفوض: تأكد من قواعد حماية Firebase' : 'خطأ: ' + er.message, 'error'); } }
+            async addActivity(e) { e.preventDefault(); const f=e.target; await addDoc(collection(db,'charity_activities'),{name:f.elements[0].value,reason:f.elements[1].value,donor:f.elements[2].value,beneficiary:f.elements[3].value,createdAt:serverTimestamp()}); f.reset(); toast('تم توثيق النشاط وحفظه بنجاح', 'success'); }
             async delAct(id) { confirm('هل تريد بالتأكيد إزالة هذا التوثيق من سجل الأنشطة بشكل نهائي؟', async()=>await deleteDoc(doc(db,'charity_activities',id))); }
 
             // --- Portal ---
