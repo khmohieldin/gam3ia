@@ -115,7 +115,7 @@
         option { background-color: var(--bg-surface-solid) !important; color: var(--text-main) !important; font-weight: 800; }
     </style>
 
-    <!-- نظام الحماية من التشغيل المحلي بدون سيرفر (لتفادي الأخطاء) -->
+    <!-- نظام الحماية من التشغيل المحلي -->
     <script>
         function checkLocalRun() {
             if(window.location.protocol === 'file:') {
@@ -132,7 +132,8 @@
             navigate: checkLocalRun, cycleTheme: checkLocalRun, toggleRadio: checkLocalRun, closeImage: checkLocalRun,
             blood: { switchTab: checkLocalRun, filter: checkLocalRun },
             services: { filter: checkLocalRun },
-            admin: { loadView: checkLocalRun, transact: checkLocalRun, loadCategoryLogs: checkLocalRun, loadProject: checkLocalRun, createProject: checkLocalRun, editProjectName: checkLocalRun, deleteProject: checkLocalRun, addMonthly: checkLocalRun, delMonthly: checkLocalRun, editMonthly: checkLocalRun, setReminder: checkLocalRun, loadReports: checkLocalRun, filterReports: checkLocalRun, editFullTx: checkLocalRun, saveEditTx: checkLocalRun, delTx: checkLocalRun, addActivity: checkLocalRun, delAct: checkLocalRun, saveTicker: checkLocalRun, saveSpeed: checkLocalRun, showTopicForm: checkLocalRun, hideTopicForm: checkLocalRun, editPor: checkLocalRun, delPor: checkLocalRun, saveTopic: checkLocalRun, toggleEvImgType: checkLocalRun, saveEvent: checkLocalRun, resetEvForm: checkLocalRun, editEv: checkLocalRun, delEv: checkLocalRun, saveAd: checkLocalRun, toggleAdImgType: checkLocalRun, addViewer: checkLocalRun, removeUser: checkLocalRun, saveBbMarquee: checkLocalRun, addBbManual: checkLocalRun, apprBb: checkLocalRun, rejBb: checkLocalRun, delBb: checkLocalRun, openEditBb: checkLocalRun, saveEditBb: checkLocalRun, sendChat: checkLocalRun, loadChat: checkLocalRun, toggleAlbumImgType: checkLocalRun, saveAlbum: checkLocalRun, resetAlbumForm: checkLocalRun, editAlbum: checkLocalRun, delAlbum: checkLocalRun, saveService: checkLocalRun, resetSrvForm: checkLocalRun, editSrv: checkLocalRun, delSrv: checkLocalRun },
+            news: { showFull: checkLocalRun },
+            admin: { loadView: checkLocalRun, transact: checkLocalRun, loadCategoryLogs: checkLocalRun, loadProject: checkLocalRun, createProject: checkLocalRun, editProjectName: checkLocalRun, deleteProject: checkLocalRun, addMonthly: checkLocalRun, delMonthly: checkLocalRun, editMonthly: checkLocalRun, setReminder: checkLocalRun, loadReports: checkLocalRun, filterReports: checkLocalRun, editFullTx: checkLocalRun, saveEditTx: checkLocalRun, delTx: checkLocalRun, addActivity: checkLocalRun, delAct: checkLocalRun, saveTicker: checkLocalRun, saveSpeed: checkLocalRun, showTopicForm: checkLocalRun, hideTopicForm: checkLocalRun, editPor: checkLocalRun, delPor: checkLocalRun, saveTopic: checkLocalRun, toggleEvImgType: checkLocalRun, saveEvent: checkLocalRun, resetEvForm: checkLocalRun, editEv: checkLocalRun, delEv: checkLocalRun, saveAd: checkLocalRun, toggleAdImgType: checkLocalRun, addViewer: checkLocalRun, removeUser: checkLocalRun, saveBbMarquee: checkLocalRun, addBbManual: checkLocalRun, apprBb: checkLocalRun, rejBb: checkLocalRun, delBb: checkLocalRun, openEditBb: checkLocalRun, saveEditBb: checkLocalRun, sendChat: checkLocalRun, loadChat: checkLocalRun, toggleAlbumImgType: checkLocalRun, saveAlbum: checkLocalRun, resetAlbumForm: checkLocalRun, editAlbum: checkLocalRun, delAlbum: checkLocalRun, saveService: checkLocalRun, resetSrvForm: checkLocalRun, editSrv: checkLocalRun, delSrv: checkLocalRun, saveSrvCat: checkLocalRun, delSrvCat: checkLocalRun, toggleNewsImgType: checkLocalRun, saveNews: checkLocalRun, resetNewsForm: checkLocalRun, editNews: checkLocalRun, delNews: checkLocalRun },
             auth: { login: checkLocalRun, logout: checkLocalRun }
         };
     </script>
@@ -164,10 +165,10 @@
             <!-- Desktop Nav -->
             <div class="hidden md:flex items-center gap-2 bg-[var(--bg-surface-solid)] p-1.5 rounded-full border border-[var(--border-color)] shadow-inner">
                 <button onclick="app.navigate('home')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-emerald-500 hover:text-white shadow-sm" data-target="home">الرئيسية</button>
+                <button onclick="app.navigate('news')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-blue-500 hover:text-white shadow-sm" data-target="news">أخبار بلدنا</button>
                 <button onclick="app.navigate('services')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-amber-500 hover:text-white shadow-sm" data-target="services">دليل الخدمات</button>
                 <button onclick="app.navigate('bloodbank')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-rose-500 hover:text-white shadow-sm" data-target="bloodbank">بنك الدم</button>
                 <button onclick="app.navigate('events')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-emerald-500 hover:text-white shadow-sm" data-target="events">الفعاليات</button>
-                <button onclick="app.navigate('download')" class="nav-btn px-5 py-2 rounded-full text-sm font-bold transition-all hover:bg-cyan-500 hover:text-white shadow-sm" data-target="download">التطبيق</button>
             </div>
 
             <div class="flex items-center gap-3">
@@ -183,10 +184,10 @@
         <!-- Mobile Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-[var(--border-color)] flex flex-col gap-2">
              <button onclick="app.navigate('home'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] font-bold text-base">الرئيسية</button>
-             <button onclick="app.navigate('services'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] text-amber-500 font-bold text-base">دليل الخدمات (وصلني والعيادات)</button>
+             <button onclick="app.navigate('news'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] text-blue-400 font-bold text-base">أخبار بلدنا</button>
+             <button onclick="app.navigate('services'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] text-amber-500 font-bold text-base">دليل الخدمات</button>
              <button onclick="app.navigate('bloodbank'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] text-rose-500 font-bold text-base">بنك الدم</button>
              <button onclick="app.navigate('events'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] text-emerald-500 font-bold text-base">الفعاليات</button>
-             <button onclick="app.navigate('download'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-right px-4 py-3 rounded-lg hover:bg-[var(--bg-surface-solid)] text-cyan-500 font-bold text-base">تحميل التطبيق</button>
         </div>
     </nav>
 
@@ -270,23 +271,24 @@
                 </a>
             </div>
 
-            <!-- Bento Grid: Dynamic Sections from Database (Vertical Scroll) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="bento-sections">
-                <!-- Injected via JS -->
-            </div>
+            <!-- Bento Grid: Dynamic Sections (These are restored to exactly how they were!) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="bento-sections"></div>
 
             <!-- New Album & Compact Buttons Section -->
             <div class="flex flex-col gap-6">
                 <!-- Album Area -->
                 <div class="glass-panel p-2 md:p-3 rounded-[2rem] shadow-xl border border-[var(--border-color)] bg-[var(--bg-base)] max-w-5xl mx-auto w-full">
                     <div id="home-album-slider" class="relative w-full h-64 md:h-[450px] rounded-[1.5rem] overflow-hidden bg-black/60 shadow-inner group">
-                        <!-- Album images injected here by JS -->
                         <div class="flex items-center justify-center h-full"><i data-lucide="loader-2" class="w-8 h-8 animate-spin text-[var(--text-muted)]"></i></div>
                     </div>
                 </div>
                 
-                <!-- Quick Compact Links -->
+                <!-- Quick Compact Links (4 Buttons without the Download App) -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto w-full px-2">
+                    <button onclick="app.navigate('news')" class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group border-b-4 border-b-blue-500 shadow-md hover:shadow-blue-500/20 bg-[var(--bg-surface-solid)]">
+                        <div class="p-3 bg-blue-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="newspaper" class="w-8 h-8 text-blue-500"></i></div>
+                        <span class="font-black text-base text-white group-hover:text-blue-400 transition-colors">أخبار بلدنا</span>
+                    </button>
                     <button onclick="app.navigate('events')" class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group border-b-4 border-b-emerald-500 shadow-md hover:shadow-emerald-500/20 bg-[var(--bg-surface-solid)]">
                         <div class="p-3 bg-emerald-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="calendar-days" class="w-8 h-8 text-emerald-500"></i></div>
                         <span class="font-black text-base text-white group-hover:text-emerald-400 transition-colors">أحدث الفعاليات</span>
@@ -299,16 +301,11 @@
                         <div class="p-3 bg-rose-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="heart-pulse" class="w-8 h-8 text-rose-500"></i></div>
                         <span class="font-black text-base text-white group-hover:text-rose-400 transition-colors">بنك الدم</span>
                     </button>
-                    <button onclick="app.navigate('download')" class="glass-panel p-5 rounded-2xl flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group border-b-4 border-b-cyan-500 shadow-md hover:shadow-cyan-500/20 bg-[var(--bg-surface-solid)]">
-                        <div class="p-3 bg-cyan-500/10 rounded-xl group-hover:scale-110 transition-transform"><i data-lucide="smartphone" class="w-8 h-8 text-cyan-500"></i></div>
-                        <span class="font-black text-base text-white group-hover:text-cyan-400 transition-colors">تطبيق الهاتف</span>
-                    </button>
                 </div>
             </div>
 
-            <!-- Info & Contact Section -->
+            <!-- Info & Contact Section (روابطنا وحساباتنا) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-                <!-- Info & Socials Card -->
                 <div class="glass-panel rounded-3xl p-8 shadow-lg border-t-8 border-t-emerald-500 flex flex-col gap-6">
                     <div class="text-center mb-2">
                         <h2 class="text-3xl font-black text-emerald-400 mb-2">روابطنا وحساباتنا</h2>
@@ -345,7 +342,6 @@
                     </div>
                 </div>
 
-                <!-- Contact Form -->
                 <div class="glass-panel rounded-3xl p-8 shadow-lg border-t-8 border-t-emerald-500">
                     <div class="text-center mb-8">
                         <h2 class="text-3xl font-black text-emerald-400 mb-2">تواصل مع الإدارة</h2>
@@ -363,32 +359,19 @@
         </div>
     </template>
 
-    <!-- 2. Events View -->
+    <!-- NEW 2. News View -->
+    <template id="view-news">
+        <div class="animate-fade-in max-w-6xl mx-auto">
+            <h1 class="text-4xl font-black mb-10 text-blue-400 flex items-center gap-3"><i data-lucide="newspaper" class="w-10 h-10"></i> جريدة أخبار بلدنا</h1>
+            <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+    </template>
+
+    <!-- 3. Events View -->
     <template id="view-events">
         <div class="animate-fade-in max-w-6xl mx-auto">
             <h1 class="text-3xl font-black mb-8 text-emerald-400 flex items-center gap-3"><i data-lucide="calendar-days" class="w-8 h-8"></i> أرشيف الفعاليات</h1>
             <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        </div>
-    </template>
-
-    <!-- 3. Download View -->
-    <template id="view-download">
-        <div class="animate-fade-in container mx-auto flex justify-center pt-8">
-            <div class="glass-panel rounded-[2rem] shadow-xl p-8 md:p-12 max-w-2xl w-full text-center border-t-8 border-t-cyan-500 relative overflow-hidden">
-                <div class="absolute -top-20 -left-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px]"></div>
-                <img src="https://up6.cc/2025/06/175069752300521.png" class="h-32 w-32 mx-auto mb-6 rounded-full border-4 border-cyan-500 p-2 object-contain bg-[var(--bg-surface-solid)] relative z-10 shadow-lg">
-                <h2 class="text-3xl md:text-4xl font-black mb-4 relative z-10 text-white drop-shadow-md">جمعية شبراسندى</h2>
-                <p class="text-[var(--text-muted)] mb-8 text-base font-bold relative z-10">التطبيق الرسمي للجمعية لمتابعة الأخبار والفعاليات بكل سهولة ويسر.</p>
-                
-                <a href="https://github.com/khmohieldin/my-apk-app/raw/refs/heads/main/gm-sh.apk" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-105 text-white font-black py-3 px-8 rounded-full shadow-lg transition-all duration-300 mb-8 text-lg relative z-10 border border-cyan-400">
-                    <i data-lucide="download" class="w-6 h-6"></i> تحميل نسخة الأندرويد
-                </a>
-                
-                <div class="bg-[var(--bg-surface-solid)] p-4 rounded-xl border border-[var(--border-color)] relative z-10 shadow-inner">
-                    <p class="text-sm font-bold mb-2 flex items-center justify-center gap-2 text-cyan-400"><i data-lucide="smartphone" class="w-5 h-5"></i> التطبيق متاح لأجهزة الأندرويد حالياً.</p>
-                    <p class="text-xs font-bold text-[var(--text-muted)] flex items-center justify-center gap-2"><i data-lucide="apple" class="w-4 h-4"></i> سيتم توفير نسخة لأجهزة الآيفون قريباً بإذن الله.</p>
-                </div>
-            </div>
         </div>
     </template>
 
@@ -402,19 +385,16 @@
                 <h1 class="text-4xl font-black text-rose-500 mb-2 drop-shadow-md">بنك الدم</h1>
                 <p class="text-[var(--text-muted)] text-base font-bold">مبادرة شبراسندى الحديثة والقرى المجاورة</p>
                 
-                <!-- Blood Marquee -->
                 <div class="mt-6 bg-rose-600 text-white rounded-2xl p-3 relative overflow-hidden shadow-lg border border-rose-400 h-14 flex items-center justify-center max-w-2xl mx-auto">
                     <p id="blood-marquee-text" class="font-bold text-center text-sm md:text-base absolute w-full px-4 transition-opacity duration-500"></p>
                 </div>
             </div>
 
-            <!-- Action Tabs -->
             <div class="flex justify-center gap-4 mb-8">
                 <button onclick="app.blood.switchTab('search')" id="tab-btn-search" class="px-8 py-2.5 rounded-full text-lg font-black transition-all bg-rose-600 text-white shadow-md border border-rose-400">البحث عن متبرع</button>
                 <button onclick="app.blood.switchTab('submit')" id="tab-btn-submit" class="px-8 py-2.5 rounded-full text-lg font-black transition-all glass-panel hover:bg-rose-500/20 text-[var(--text-main)] border border-[var(--border-color)]">انضم كمتبرع</button>
             </div>
 
-            <!-- Search Tab -->
             <div id="tab-search" class="space-y-8">
                 <div class="glass-panel rounded-3xl p-6 text-center shadow-lg border-t-4 border-t-rose-500">
                     <h2 class="text-xl font-black mb-4 text-white">اختر فصيلة الدم المطلوبة</h2>
@@ -423,7 +403,6 @@
                 <div id="donors-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
 
-            <!-- Submit Tab -->
             <div id="tab-submit" class="hidden">
                 <div class="glass-panel rounded-3xl p-8 max-w-2xl mx-auto shadow-lg border-t-4 border-t-rose-500">
                     <h2 class="text-2xl font-black mb-3 text-center text-rose-500">طلب انضمام لقائمة الشرف</h2>
@@ -465,7 +444,7 @@
         </div>
     </template>
 
-    <!-- NEW 5. Services Directory View -->
+    <!-- 5. Services Directory View -->
     <template id="view-services">
         <div class="animate-fade-in max-w-6xl mx-auto">
             <div class="text-center mb-10">
@@ -475,25 +454,16 @@
                 <h1 class="text-4xl font-black text-amber-500 mb-2 drop-shadow-md">دليل الخدمات</h1>
                 <p class="text-[var(--text-muted)] text-base font-bold">أرقام وتفاصيل الخدمات المحلية في بلدنا</p>
             </div>
-
-            <!-- Services Filter Tabs -->
             <div class="glass-panel rounded-3xl p-6 text-center shadow-lg border-t-4 border-t-amber-500 mb-8 overflow-x-auto whitespace-nowrap custom-scroll">
-                <div class="flex items-center justify-center gap-3 min-w-max mx-auto" id="services-type-filters">
-                    <!-- Filters generated by JS -->
-                </div>
+                <div class="flex items-center justify-center gap-3 min-w-max mx-auto" id="services-type-filters"></div>
             </div>
-
-            <!-- Services Grid -->
-            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Cards generated by JS -->
-            </div>
+            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
     </template>
 
     <!-- 6. Admin Dashboard Base -->
     <template id="view-admin">
         <div class="animate-fade-in flex flex-col lg:flex-row gap-6 min-h-[80vh]">
-            <!-- Sidebar -->
             <aside class="lg:w-64 flex-shrink-0 z-40">
                 <div class="glass-panel rounded-3xl p-5 lg:sticky lg:top-24 border-emerald-500/30 shadow-lg flex flex-col h-auto lg:h-[85vh]">
                     <div class="text-center mb-6 pb-4 border-b border-[var(--border-color)] shrink-0">
@@ -508,9 +478,36 @@
                     </button>
                 </div>
             </aside>
-            <!-- Content Area -->
             <div class="flex-1 glass-panel rounded-3xl p-5 md:p-8 shadow-lg border border-[var(--border-color)] overflow-hidden" id="admin-content-area"></div>
         </div>
+    </template>
+
+    <!-- Admin Sub: News -->
+    <template id="tpl-admin-news">
+        <h2 class="text-3xl font-black mb-8 text-blue-400 flex items-center gap-3"><i data-lucide="newspaper" class="w-8 h-8"></i> إدارة أخبار بلدنا</h2>
+        <form id="news-form" class="glass-panel p-6 md:p-8 rounded-[2rem] space-y-6 admin-only shadow-lg border-t-4 border-t-blue-500 mb-8" onsubmit="app.admin.saveNews(event)">
+            <input type="hidden" id="news-id">
+            <input type="text" id="news-title" placeholder="عنوان الخبر الرئيسي..." required class="w-full px-5 py-4 rounded-xl text-xl font-black bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-blue-500">
+            <textarea id="news-content" placeholder="تفاصيل الخبر بالكامل هنا..." required rows="5" class="w-full px-5 py-4 rounded-xl text-base font-bold bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-blue-500 leading-relaxed"></textarea>
+            
+            <div class="p-5 bg-[var(--bg-base)] rounded-2xl border border-[var(--border-color)]">
+                <label class="text-base font-black text-white block mb-4">صورة مرفقة مع الخبر (اختياري):</label>
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <select id="news-img-type" class="w-full md:w-auto px-4 py-3 rounded-xl font-bold bg-blue-900/20 text-blue-400 border border-blue-500/50" onchange="app.admin.toggleNewsImgType()">
+                        <option value="file">رفع صورة من الجهاز</option>
+                        <option value="url">إدراج رابط مباشر</option>
+                    </select>
+                    <input type="file" id="news-img-file" accept="image/*" class="flex-1 w-full px-4 py-2.5 rounded-xl font-bold bg-[var(--bg-surface-solid)] border border-dashed border-[var(--border-color)] cursor-pointer">
+                    <input type="url" id="news-img-url" placeholder="رابط مباشر للصورة (http...)" class="hidden flex-1 w-full px-4 py-3 rounded-xl font-bold text-left" dir="ltr">
+                </div>
+            </div>
+            
+            <div class="flex gap-4 mt-6">
+                <button type="submit" id="news-submit-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-black text-xl shadow-md border border-blue-400 transition-transform hover:scale-[1.02]">نشر الخبر <i data-lucide="send" class="w-5 h-5 inline ml-1"></i></button>
+                <button type="button" id="news-cancel-btn" class="hidden flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3.5 rounded-xl font-black text-lg shadow-md border border-gray-400" onclick="app.admin.resetNewsForm()">إلغاء التعديل</button>
+            </div>
+        </form>
+        <div id="news-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </template>
 
     <!-- Admin Sub: Album -->
@@ -544,37 +541,55 @@
     <!-- Admin Sub: Services Directory -->
     <template id="tpl-admin-services">
         <h2 class="text-3xl font-black mb-8 text-amber-500 flex items-center gap-3"><i data-lucide="map-pin" class="w-8 h-8"></i> دليل الخدمات المحلية</h2>
+        
+        <div class="solid-panel p-6 md:p-8 rounded-[2rem] border-t-4 border-t-orange-500 admin-only shadow-lg mb-8">
+            <h3 class="font-black mb-6 text-xl text-white flex items-center gap-2"><i data-lucide="layers" class="w-6 h-6 text-orange-400"></i> إدارة أقسام الدليل</h3>
+            <form onsubmit="app.admin.saveSrvCat(event)" class="flex flex-col sm:flex-row gap-3 mb-6">
+                <input type="text" id="srv-cat-name" placeholder="اسم القسم الجديد (مثال: كهربائية، مطاعم...)" required class="flex-1 px-4 py-3 rounded-xl text-base font-bold bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-orange-500">
+                <select id="srv-cat-icon" required class="w-full sm:w-auto px-4 py-3 rounded-xl font-bold bg-[var(--bg-base)] text-orange-400 border border-orange-500/50">
+                    <option value="map-pin" selected>أيقونة عامة (خريطة)</option>
+                    <option value="stethoscope">عيادة (سماعة)</option>
+                    <option value="pill">صيدلية (حبة دواء)</option>
+                    <option value="flask-conical">معمل (دورق)</option>
+                    <option value="car">مواصلات (سيارة)</option>
+                    <option value="store">متجر (محل)</option>
+                    <option value="wrench">صيانة (مفتاح)</option>
+                    <option value="graduation-cap">تعليم (قبعة)</option>
+                    <option value="utensils">مطعم (طعام)</option>
+                    <option value="home">منزل / حرفي</option>
+                </select>
+                <button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-xl font-black text-base shadow-sm border border-orange-400">إضافة القسم</button>
+            </form>
+            <div id="srv-cat-list" class="flex flex-wrap gap-3"></div>
+        </div>
+
         <form id="srv-form" class="glass-panel p-6 md:p-8 rounded-[2rem] space-y-6 admin-only shadow-lg border-t-4 border-t-amber-500 mb-8" onsubmit="app.admin.saveService(event)">
+            <h3 class="font-black text-xl text-amber-400 border-b border-amber-500/30 pb-3 mb-4">إضافة / تعديل خدمة في الدليل</h3>
             <input type="hidden" id="srv-id">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="text-sm font-bold text-[var(--text-muted)] ml-2 block mb-2">تصنيف الخدمة</label>
-                    <select id="srv-cat" required class="w-full px-4 py-3 rounded-xl font-bold text-lg bg-[var(--bg-base)] text-amber-500 border border-[var(--border-color)] focus:border-amber-500">
-                        <option value="" disabled selected>اختر القسم...</option>
-                        <option value="عيادات طبية">عيادات طبية</option>
-                        <option value="صيدليات">صيدليات</option>
-                        <option value="معامل تحاليل">معامل تحاليل</option>
-                        <option value="وصّلني (مواصلات)">وصّلني (مواصلات)</option>
-                        <option value="خدمات عامة أخرى">خدمات عامة أخرى</option>
+                    <select id="srv-cat" required class="w-full px-4 py-3 rounded-xl font-bold text-base bg-[var(--bg-base)] text-amber-500 border border-[var(--border-color)] focus:border-amber-500">
+                        <option value="" disabled selected>أضف أقساماً من الإدارة أعلاه لتظهر هنا...</option>
                     </select>
                 </div>
                 <div>
-                    <label class="text-sm font-bold text-[var(--text-muted)] ml-2 block mb-2">الاسم (اسم الدكتور، الصيدلية، أو صاحب المركبة)</label>
-                    <input type="text" id="srv-name" placeholder="الاسم..." required class="w-full px-4 py-3 rounded-xl text-lg font-bold bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-amber-500">
+                    <label class="text-sm font-bold text-[var(--text-muted)] ml-2 block mb-2">الاسم (اسم الدكتور، الصيدلية، الخ)</label>
+                    <input type="text" id="srv-name" placeholder="الاسم..." required class="w-full px-4 py-3 rounded-xl text-base font-bold bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-amber-500">
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="text-sm font-bold text-[var(--text-muted)] ml-2 block mb-2">التفاصيل (التخصص، العنوان، أو نوع المركبة)</label>
-                    <input type="text" id="srv-details" placeholder="مثال: باطنة، بجوار المسجد، توك توك..." required class="w-full px-4 py-3 rounded-xl text-lg font-bold bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-amber-500">
+                    <label class="text-sm font-bold text-[var(--text-muted)] ml-2 block mb-2">التفاصيل / التخصص / العنوان</label>
+                    <input type="text" id="srv-details" placeholder="مثال: باطنة، بجوار المسجد..." required class="w-full px-4 py-3 rounded-xl text-base font-bold bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-amber-500">
                 </div>
                 <div>
                     <label class="text-sm font-bold text-[var(--text-muted)] ml-2 block mb-2">رقم التواصل</label>
-                    <input type="tel" id="srv-phone" placeholder="رقم الهاتف" required class="w-full px-4 py-3 rounded-xl text-lg font-bold text-left bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-amber-500" dir="ltr">
+                    <input type="tel" id="srv-phone" placeholder="رقم الهاتف" required class="w-full px-4 py-3 rounded-xl text-base font-bold text-left bg-[var(--bg-base)] border border-[var(--border-color)] focus:border-amber-500" dir="ltr">
                 </div>
             </div>
             <div class="flex gap-4 mt-6">
-                <button type="submit" id="srv-submit-btn" class="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3.5 rounded-xl font-black text-xl shadow-md border border-amber-400 transition-transform hover:scale-[1.02]">إضافة الدليل <i data-lucide="plus-circle" class="w-6 h-6 inline ml-1"></i></button>
+                <button type="submit" id="srv-submit-btn" class="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3.5 rounded-xl font-black text-lg shadow-md border border-amber-400 transition-transform hover:scale-[1.02]">إضافة للخدمات <i data-lucide="plus-circle" class="w-5 h-5 inline ml-1"></i></button>
                 <button type="button" id="srv-cancel-btn" class="hidden flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3.5 rounded-xl font-black text-lg shadow-md border border-gray-400" onclick="app.admin.resetSrvForm()">إلغاء التعديل</button>
             </div>
         </form>
@@ -734,7 +749,7 @@
 
     <!-- Admin Sub: Portal -->
     <template id="tpl-admin-portal">
-        <h2 class="text-3xl font-black mb-8 text-emerald-400 flex items-center gap-3"><i data-lucide="layout-template" class="w-8 h-8"></i> إدارة واجهة المنصة</h2>
+        <h2 class="text-3xl font-black mb-8 text-emerald-400 flex items-center gap-3"><i data-lucide="layout-template" class="w-8 h-8"></i> إدارة واجهة المنصة (الأقسام الرئيسية)</h2>
         
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
             <div class="solid-panel p-6 rounded-3xl border-l-4 border-l-emerald-500 admin-only shadow-md">
@@ -988,6 +1003,25 @@
         </div>
     </div>
 
+    <!-- Modal for Full News View -->
+    <div id="news-full-modal" class="hidden fixed inset-0 z-[200] bg-black/90 flex items-center justify-center p-4 md:p-10 backdrop-blur-md opacity-0 transition-opacity duration-300" onclick="document.getElementById('news-full-modal').classList.add('hidden')">
+        <div class="glass-panel w-full max-w-4xl h-[90vh] md:h-auto md:max-h-[90vh] rounded-[2rem] overflow-hidden shadow-2xl border-2 border-blue-500/50 flex flex-col" onclick="event.stopPropagation();">
+            <div class="relative h-64 md:h-80 w-full shrink-0">
+                <img id="news-full-img" src="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"></div>
+                <button onclick="document.getElementById('news-full-modal').classList.add('hidden')" class="absolute top-4 right-4 bg-black/50 hover:bg-rose-500 text-white p-2 rounded-full transition-colors backdrop-blur-md"><i data-lucide="x" class="w-6 h-6"></i></button>
+                <div class="absolute bottom-0 left-0 right-0 p-6">
+                    <span id="news-full-date" class="text-blue-300 text-sm font-bold mb-2 block"></span>
+                    <h2 id="news-full-title" class="text-2xl md:text-4xl font-black text-white drop-shadow-md leading-snug"></h2>
+                </div>
+            </div>
+            <div class="p-6 md:p-8 overflow-y-auto custom-scroll flex-1 bg-[var(--bg-base)]">
+                <p id="news-full-content" class="text-lg md:text-xl font-bold leading-loose text-white whitespace-pre-wrap"></p>
+                <div id="news-full-tags" class="flex flex-wrap gap-2 mt-8 pt-6 border-t border-[var(--border-color)]"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- ==================== LOGIC ==================== -->
     <script type="module">
         import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -1027,6 +1061,11 @@
             const fd = new FormData(); fd.append("image", f); 
             try { const r = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {method:"POST",body:fd}); const data = await r.json(); if(!r.ok) throw new Error(data?.error?.message || "فشل الرفع"); return data.data.url; } catch(e) { throw new Error("تأكد من جودة الصورة واتصال الإنترنت."); }
         };
+        const generateTags = (t, c) => {
+            let txt = (t + " " + c).replace(/[^\w\s\u0600-\u06FF]/g, "");
+            let w = txt.split(/\s+/).filter(x => x.length > 3 && !['في','من','على','الى','عن','مع','هذا','هذه','التي','الذي','و','أو','ثم'].includes(x));
+            return [...new Set(w)].slice(0, 5).map(x => '#' + x);
+        };
 
         // --- 3. CORE APP ---
         class App {
@@ -1034,9 +1073,8 @@
                 this.unsubs = []; this.intervals = []; this.role = 'guest'; this.user = null; this.view = 'home';
                 this.portalSecs = { past_work: { t: 'أعمالنا السابقة', i: 'history', c: 'blue' }, current_work: { t: 'أعمالنا الحالية', i: 'zap', c: 'amber' }, future_work: { t: 'أعمالنا اللاحقة', i: 'rocket', c: 'purple' }, year_expenses: { t: 'مصروفات العام', i: 'wallet', c: 'emerald' } };
                 this.donCats = { debt_relief: "سداد ديون الغارمين", patient_care: "رعاية المرضى", family_projects: "مشروعات تنموية للأسر", food_aid: "شنط رمضان والمساعدات الغذائية", education: "التبرع للتعليم", zakat: "زكاة المال", feeding: "الإطعام", oath_expiation: "كفارة يمين", marriage_aid: "مساعدات زواج" };
-                this.serviceCats = { clinics: 'عيادات طبية', pharmacies: 'صيدليات', labs: 'معامل تحاليل', wasalny: 'وصّلني (مواصلات)', other: 'خدمات عامة أخرى' };
                 
-                this.auth = new AuthMod(this); this.pub = new PublicMod(this); this.blood = new BloodMod(this); this.admin = new AdminMod(this); this.services = new ServicesMod(this);
+                this.auth = new AuthMod(this); this.pub = new PublicMod(this); this.blood = new BloodMod(this); this.admin = new AdminMod(this); this.services = new ServicesMod(this); this.news = new NewsMod(this);
                 
                 window.onload = () => {
                     lucide.createIcons(); this.setupClock(); this.pub.initBloodDrops();
@@ -1051,18 +1089,18 @@
                 if(v === 'admin' && this.role === 'guest') return document.getElementById('login-modal').classList.remove('hidden');
                 this.view = v; const c = document.getElementById('app-content'); const t = document.getElementById(`view-${v}`);
                 if(c && t) { c.innerHTML=''; c.appendChild(t.content.cloneNode(true)); lucide.createIcons(); }
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('bg-emerald-500','bg-rose-500','bg-cyan-500','bg-amber-500','text-white'));
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('bg-emerald-500','bg-rose-500','bg-cyan-500','bg-amber-500','bg-blue-500','text-white'));
                 const a = document.querySelector(`.nav-btn[data-target="${v}"]`); 
                 if(a) {
                     let colorClass = 'bg-emerald-500';
                     if(v === 'bloodbank') colorClass = 'bg-rose-500';
-                    else if(v === 'download') colorClass = 'bg-cyan-500';
                     else if(v === 'services') colorClass = 'bg-amber-500';
+                    else if(v === 'news') colorClass = 'bg-blue-500';
                     a.classList.add(colorClass, 'text-white');
                 }
                 document.getElementById('blood-fx').classList.toggle('active', v==='bloodbank');
                 this.clear();
-                if(v==='home') this.pub.initHome(); else if(v==='events') this.pub.initEvents(); else if(v==='bloodbank') this.blood.initPub(); else if(v==='admin') this.admin.init(); else if(v==='services') this.services.initPub();
+                if(v==='home') this.pub.initHome(); else if(v==='events') this.pub.initEvents(); else if(v==='bloodbank') this.blood.initPub(); else if(v==='admin') this.admin.init(); else if(v==='services') this.services.initPub(); else if(v==='news') this.news.initPub();
             }
 
             cycleTheme() { const ts = ['default', 'light', 'blue']; let c = localStorage.getItem('theme')||'default'; let n = ts[(ts.indexOf(c)+1)%ts.length]; document.body.className = `theme-${n} antialiased min-h-screen flex flex-col`; localStorage.setItem('theme', n); }
@@ -1107,6 +1145,62 @@
             async logout() { await signOut(auth); try { await signOut(bAuth); } catch(e){} toast('تم تسجيل الخروج', 'info'); this.a.navigate('home'); }
         }
 
+        // --- NEW: NEWS MOD ---
+        class NewsMod {
+            constructor(a) { this.a = a; this.newsList = []; }
+            initPub() {
+                this.a.unsubs.push(this.a.safeSnapshot(query(collection(db, 'news'), orderBy('createdAt', 'desc')), s => {
+                    this.newsList = s.docs.map(x => ({id: x.id, ...x.data()}));
+                    this.renderNews();
+                }));
+            }
+            renderNews() {
+                const g = document.getElementById('news-grid'); if(!g) return;
+                g.innerHTML = '';
+                if(!this.newsList.length) { g.innerHTML = `<div class="col-span-full text-center bg-blue-900/10 border border-blue-500/30 rounded-2xl p-8 font-bold text-lg text-blue-400">لم يتم إضافة أخبار حتى الآن.</div>`; return; }
+                
+                this.newsList.forEach(d => {
+                    const tagsHtml = (d.tags||[]).map(t => `<span class="bg-blue-500/20 text-blue-400 text-xs font-bold px-2 py-1 rounded-full border border-blue-500/30">${t}</span>`).join('');
+                    const imgHtml = d.imageUrl ? `
+                        <div class="h-48 w-full cursor-pointer overflow-hidden relative group shrink-0" onclick="app.showImage('${d.imageUrl}')">
+                            <img src="${d.imageUrl}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="text-white w-8 h-8"></i></div>
+                        </div>` : '';
+                    g.innerHTML += `
+                        <div class="glass-panel rounded-3xl overflow-hidden shadow-lg border border-[var(--border-color)] flex flex-col h-full hover:shadow-[0_15px_30px_rgba(59,130,246,0.2)] transition-shadow">
+                            ${imgHtml}
+                            <div class="p-6 flex flex-col flex-1">
+                                <span class="text-xs font-bold text-[var(--text-muted)] mb-2 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${d.createdAt?.toDate().toLocaleDateString('ar-EG')}</span>
+                                <h3 class="font-black text-xl mb-3 text-white leading-snug">${d.title}</h3>
+                                <p class="text-sm font-bold text-[var(--text-muted)] leading-relaxed mb-4 line-clamp-3 flex-1">${d.content}</p>
+                                <div class="flex flex-wrap gap-1.5 mb-4">${tagsHtml}</div>
+                                <button onclick="app.news.showFull('${d.id}')" class="w-full py-2.5 bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white rounded-xl font-black text-sm transition-colors border border-blue-500/30 flex items-center justify-center gap-2 mt-auto">اقرأ المزيد <i data-lucide="arrow-left" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>`;
+                });
+                lucide.createIcons();
+            }
+            showFull(id) {
+                const n = this.newsList.find(x => x.id === id); if(!n) return;
+                const m = document.getElementById('news-full-modal');
+                document.getElementById('news-full-title').textContent = n.title;
+                document.getElementById('news-full-date').textContent = n.createdAt?.toDate().toLocaleDateString('ar-EG') || '';
+                document.getElementById('news-full-content').textContent = n.content;
+                document.getElementById('news-full-tags').innerHTML = (n.tags||[]).map(t => `<span class="bg-blue-500/20 text-blue-400 text-sm font-bold px-3 py-1.5 rounded-full border border-blue-500/30">${t}</span>`).join('');
+                
+                const imgContainer = document.getElementById('news-full-img').parentElement;
+                if(n.imageUrl) {
+                    document.getElementById('news-full-img').src = n.imageUrl;
+                    imgContainer.classList.remove('hidden');
+                } else {
+                    imgContainer.classList.add('hidden');
+                }
+                
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.remove('opacity-0'), 10);
+            }
+        }
+
         // --- 5. PUBLIC CHARITY ---
         class PublicMod {
             constructor(a) { this.a=a; this.dur = 15; } 
@@ -1117,6 +1211,8 @@
                 this.a.unsubs.push(this.a.safeSnapshot(doc(db,"app_data","advertisement"), d => { const dt=d.data(); const c=document.getElementById('home-ad-container'); if(dt?.isVisible){c.classList.remove('hidden');document.getElementById('home-ad-title').textContent=dt.title;document.getElementById('home-ad-desc').textContent=dt.description;document.getElementById('home-ad-img').src=dt.imageUrl;document.getElementById('home-ad-link').href=dt.linkUrl;}else c.classList.add('hidden'); }));
                 this.a.unsubs.push(this.a.safeSnapshot(doc(db,"app_data","settings"), d => { if(d.data()?.slideshowDuration) this.dur = d.data().slideshowDuration; }));
                 this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'album_images'), orderBy('createdAt','desc')), s => this.runAlbumSlideshow(document.getElementById('home-album-slider'), s.docs.map(x=>x.data()))));
+                
+                // الاستدعاء الثابت للأقسام الأربعة الأصلية كما طلب المستخدم بدلاً من الديناميكية
                 const g=document.getElementById('bento-sections'); g.innerHTML='';
                 Object.entries(this.a.portalSecs).forEach(([id,inf]) => {
                     const d=document.createElement('div'); d.className=`glass-panel rounded-3xl p-6 relative overflow-hidden flex flex-col border-t-4 border-t-${inf.c}-500 shadow-lg h-72 portal-section-container`;
@@ -1124,6 +1220,7 @@
                     this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,`portal_sections/${id}/topics`), orderBy('createdAt','desc')), s => this.runScroll(document.getElementById(`ps-${id}`), s.docs.map(x=>x.data()))));
                 });
                 lucide.createIcons();
+
                 document.getElementById('contact-form').onsubmit = async e => { e.preventDefault(); const b=e.target.querySelector('button'); b.disabled=true; try{ await addDoc(collection(db,'visitor_messages'),{name:document.getElementById('contact-name').value||'فاعل خير',message:document.getElementById('contact-message').value,createdAt:serverTimestamp(),read:false}); toast('استلمنا رسالتك.. جزاك الله خيراً','success'); e.target.reset(); }catch(err){console.error(err); toast(err.message.includes('permission') ? 'مرفوض: تأكد من قواعد حماية Firebase' : 'خطأ: ' + err.message, 'error');}finally{b.disabled=false;} };
                 let st = document.getElementById('fade-mask-style');
                 if(!st){ st = document.createElement('style'); st.id='fade-mask-style'; st.innerHTML = `.fade-mask { mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent); }`; document.head.appendChild(st); }
@@ -1135,7 +1232,6 @@
                 items.forEach((item, i) => {
                     const slide = document.createElement('div');
                     slide.className = `album-slide w-full h-full ${i===0 ? 'active' : ''}`;
-                    // استخدام الاحتواء والخلفية الضبابية لعدم قص الصورة
                     slide.innerHTML = `
                         <div class="absolute inset-0 bg-cover bg-center blur-xl opacity-40 scale-110" style="background-image: url('${item.imageUrl}')"></div>
                         <img src="${item.imageUrl}" class="relative w-full h-full object-contain cursor-pointer hover:scale-105 transition-transform duration-700 z-10" onclick="app.showImage(this.src)">
@@ -1193,42 +1289,59 @@
 
         // --- NEW: SERVICES DIRECTORY ---
         class ServicesMod {
-            constructor(a) { this.a = a; this.services = []; }
+            constructor(a) { this.a = a; this.services = []; this.cats = []; }
             initPub() {
-                this.renderFilters();
-                this.a.unsubs.push(this.a.safeSnapshot(query(collection(db, 'services'), orderBy('createdAt', 'desc')), s => {
-                    this.services = s.docs.map(x => ({id: x.id, ...x.data()}));
-                    this.renderSrvs('الكل');
+                this.a.unsubs.push(this.a.safeSnapshot(query(collection(db, 'service_categories'), orderBy('createdAt', 'asc')), catSnap => {
+                    this.cats = catSnap.docs.map(x => ({id: x.id, ...x.data()}));
+                    this.renderFilters();
+                    
+                    this.a.unsubs.push(this.a.safeSnapshot(query(collection(db, 'services'), orderBy('createdAt', 'desc')), s => {
+                        this.services = s.docs.map(x => ({id: x.id, ...x.data()}));
+                        this.renderSrvs('الكل');
+                    }));
                 }));
             }
             renderFilters() {
                 const f = document.getElementById('services-type-filters'); if(!f) return;
-                const cats = ['الكل', ...Object.values(this.a.serviceCats)];
-                f.innerHTML = cats.map(t => `<button onclick="app.services.filter('${t}')" class="srv-filt px-6 py-2.5 rounded-xl text-sm font-black border-2 border-amber-500/30 hover:bg-amber-500/20 transition-colors shadow-sm ${t==='الكل'?'bg-amber-500 text-white border-amber-500 shadow-amber-500/40':'text-amber-500'}">${t}</button>`).join('');
+                let html = `<button onclick="app.services.filter('الكل')" class="srv-filt px-6 py-2.5 rounded-xl text-sm font-black border-2 border-amber-500 transition-colors shadow-amber-500/40 shadow-sm bg-amber-500 text-white">الكل</button>`;
+                this.cats.forEach(c => {
+                    html += `<button onclick="app.services.filter('${c.id}')" class="srv-filt px-6 py-2.5 rounded-xl text-sm font-black border-2 border-amber-500/30 hover:bg-amber-500/20 transition-colors shadow-sm text-amber-500">${c.name}</button>`;
+                });
+                f.innerHTML = html;
             }
             filter(t) {
-                document.querySelectorAll('.srv-filt').forEach(b => { b.classList.remove('bg-amber-500','text-white','border-amber-500','shadow-amber-500/40'); b.classList.add('text-amber-500'); if(b.textContent===t){ b.classList.add('bg-amber-500','text-white','border-amber-500','shadow-amber-500/40'); b.classList.remove('text-amber-500'); } });
+                document.querySelectorAll('.srv-filt').forEach(b => { 
+                    b.classList.remove('bg-amber-500','text-white','border-amber-500','shadow-amber-500/40'); 
+                    b.classList.add('text-amber-500'); 
+                    
+                    let isMatch = false;
+                    if(t === 'الكل' && b.textContent === 'الكل') isMatch = true;
+                    else if(t !== 'الكل') {
+                        const cat = this.cats.find(c => c.id === t);
+                        if(cat && b.textContent === cat.name) isMatch = true;
+                    }
+                    
+                    if(isMatch){ b.classList.add('bg-amber-500','text-white','border-amber-500','shadow-amber-500/40'); b.classList.remove('text-amber-500'); } 
+                });
                 this.renderSrvs(t);
             }
             renderSrvs(t) {
                 const g = document.getElementById('services-grid'); if(!g) return;
-                let l = t === 'الكل' ? this.services : this.services.filter(x => x.category === t);
+                let l = t === 'الكل' ? this.services : this.services.filter(x => x.categoryId === t);
                 g.innerHTML = '';
                 if(!l.length){ g.innerHTML = `<div class="col-span-full text-center bg-amber-900/10 border border-amber-500/30 rounded-2xl p-8 font-bold text-lg text-amber-500">لم يتم إضافة خدمات في هذا القسم بعد.</div>`; return; }
                 
                 l.forEach(d => {
-                    const isWasalny = d.category === 'وصّلني (مواصلات)';
-                    const icon = isWasalny ? 'car' : (d.category.includes('صيد') ? 'pill' : (d.category.includes('معامل') ? 'flask-conical' : 'stethoscope'));
-                    
+                    const cat = this.cats.find(c => c.id === d.categoryId) || {name: 'أخرى', icon: 'map-pin'};
                     g.innerHTML += `
                         <div class="glass-panel p-6 rounded-3xl flex flex-col shadow-lg border-t-4 border-t-amber-500 hover:-translate-y-1 transition-transform">
                             <div class="flex justify-between items-start mb-4">
                                 <div class="flex-1 pl-2">
                                     <h3 class="font-black text-xl mb-1 text-white">${d.name}</h3>
-                                    <span class="text-xs font-bold px-3 py-1 rounded-full border bg-amber-500/20 text-amber-400 border-amber-500/30 inline-block">${d.category}</span>
+                                    <span class="text-xs font-bold px-3 py-1 rounded-full border bg-amber-500/20 text-amber-400 border-amber-500/30 inline-block">${cat.name}</span>
                                 </div>
                                 <div class="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center border border-amber-500/40 shadow-inner shrink-0">
-                                    <i data-lucide="${icon}" class="w-7 h-7 text-amber-500"></i>
+                                    <i data-lucide="${cat.icon}" class="w-7 h-7 text-amber-500"></i>
                                 </div>
                             </div>
                             <div class="bg-[var(--bg-base)] p-4 rounded-xl mb-4 border border-[var(--border-color)]">
@@ -1265,12 +1378,12 @@
 
         // --- 7. ADMIN ---
         class AdminMod {
-            constructor(a) { this.a=a; this.allTxs=[]; }
+            constructor(a) { this.a=a; this.allTxs=[]; this.srvCats=[]; }
             init() {
                 document.getElementById('admin-email-display').textContent=this.a.user.email;
                 const n=document.getElementById('admin-sidebar-nav'); n.innerHTML='';
                 const b=(v,i,t,d) => `<button onclick="app.admin.loadView('${v}')" class="nav-ad-${v} w-full text-center lg:text-right px-3 py-3 lg:px-5 lg:py-4 rounded-xl transition-all flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-2 lg:gap-3 font-bold text-[14px] lg:text-base shrink-0 ${d?'bg-emerald-500 text-white shadow-md':'bg-[var(--bg-surface-solid)] lg:bg-transparent hover:bg-[var(--bg-surface-solid)] text-[var(--text-muted)] hover:text-white border border-[var(--border-color)] lg:border-transparent'}"><i data-lucide="${i}" class="w-6 h-6 lg:w-5 lg:h-5 shrink-0"></i> <span class="leading-snug">${t}</span></button>`;
-                n.innerHTML=b('finances','dollar-sign','المالية والخزينة',true)+b('reports','file-text','السجل المالي')+b('activities','clipboard-list','توثيق الأنشطة')+b('services','map-pin','دليل الخدمات')+b('portal','layout-template','محتوى البوابة')+b('album','images','ألبوم الصور')+b('events','calendar-days','أرشيف الفعاليات')+b('messages','message-square','الرسائل الواردة')+b('ads','megaphone','الإعلان الممول')+(this.a.role==='admin'?b('users','users','صلاحيات الإدارة'):'')+b('bloodbank','droplet','بنك الدم');
+                n.innerHTML=b('finances','dollar-sign','المالية والخزينة',true)+b('reports','file-text','السجل المالي')+b('activities','clipboard-list','توثيق الأنشطة')+b('news','newspaper','أخبار بلدنا')+b('services','map-pin','دليل الخدمات')+b('portal','layout-template','محتوى البوابة')+b('album','images','ألبوم الصور')+b('events','calendar-days','أرشيف الفعاليات')+b('messages','message-square','الرسائل الواردة')+b('ads','megaphone','الإعلان الممول')+(this.a.role==='admin'?b('users','users','صلاحيات الإدارة'):'')+b('bloodbank','droplet','بنك الدم');
                 lucide.createIcons(); this.loadView('finances');
             }
             loadView(v) {
@@ -1278,17 +1391,46 @@
                 document.querySelector(`.nav-ad-${v}`).classList.add('bg-emerald-500','text-white','shadow-md'); 
                 document.querySelector(`.nav-ad-${v}`).classList.remove('bg-[var(--bg-surface-solid)]','lg:bg-transparent','text-[var(--text-muted)]','border-[var(--border-color)]');
                 this.a.clear(); const c=document.getElementById('admin-content-area'); c.innerHTML=''; c.appendChild(document.getElementById(`tpl-admin-${v}`).content.cloneNode(true)); lucide.createIcons();
-                if(v==='finances') this.initFin(); else if(v==='reports') this.loadReports(); else if(v==='activities') this.initAct(); else if(v==='portal') this.initPor(); else if(v==='events') this.initEv(); else if(v==='messages') this.initMsg(); else if(v==='ads') this.initAds(); else if(v==='users') this.initUsr(); else if(v==='bloodbank') this.initBb(); else if(v==='album') this.initAlbum(); else if(v==='services') this.initSrv();
+                if(v==='finances') this.initFin(); else if(v==='reports') this.loadReports(); else if(v==='activities') this.initAct(); else if(v==='portal') this.initPor(); else if(v==='events') this.initEv(); else if(v==='messages') this.initMsg(); else if(v==='ads') this.initAds(); else if(v==='users') this.initUsr(); else if(v==='bloodbank') this.initBb(); else if(v==='album') this.initAlbum(); else if(v==='services') this.initSrv(); else if(v==='news') this.initNews();
                 this.a.auth.updateUI();
             }
 
-            // --- Album Admin (NEW) ---
+            // --- NEWS ADMIN (NEW) ---
+            initNews() {
+                this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'news'), orderBy('createdAt','desc')), s=>{ 
+                    const l=document.getElementById('news-list'); l.innerHTML=''; 
+                    s.forEach(d=>{ 
+                        const v=d.data(); 
+                        l.innerHTML+=`<div class="bg-[var(--bg-base)] p-5 rounded-2xl border border-[var(--border-color)] flex flex-col shadow-md hover:border-blue-500/50 transition-colors"><div class="flex justify-between items-start mb-3"><h4 class="font-black text-lg line-clamp-2 flex-1 text-white leading-snug">${v.title}</h4><div class="flex gap-2 admin-only mr-2"><button onclick="app.admin.editNews('${d.id}','${v.title.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.content.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="text-cyan-400 bg-cyan-900/40 p-2 rounded-lg hover:bg-cyan-500 hover:text-white transition-colors border border-cyan-500/50"><i data-lucide="edit-3" class="w-4 h-4"></i></button><button onclick="app.admin.delNews('${d.id}')" class="text-rose-400 bg-rose-900/40 p-2 rounded-lg hover:bg-rose-500 hover:text-white transition-colors border border-rose-500/50"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div><p class="text-sm font-bold text-[var(--text-muted)] line-clamp-3 leading-relaxed mb-3">${v.content}</p><div class="flex flex-wrap gap-1 mt-auto">${(v.tags||[]).map(t=>`<span class="bg-blue-500/20 text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/30">${t}</span>`).join('')}</div></div>`; 
+                    }); 
+                    lucide.createIcons(); 
+                }));
+            }
+            toggleNewsImgType() { const t=document.getElementById('news-img-type').value; document.getElementById('news-img-url').classList.toggle('hidden',t==='file'); document.getElementById('news-img-file').classList.toggle('hidden',t==='url'); }
+            async saveNews(e) {
+                e.preventDefault(); const b=document.getElementById('news-submit-btn'); b.disabled=true; b.innerHTML='<i data-lucide="loader-2" class="animate-spin w-5 h-5 text-white inline mr-2"></i> جاري النشر...'; lucide.createIcons(); 
+                try{ 
+                    const i=document.getElementById('news-id').value, t=document.getElementById('news-title').value, c=document.getElementById('news-content').value, tp=document.getElementById('news-img-type').value; 
+                    let iu=document.getElementById('news-img-url').value; 
+                    if(tp==='file') { const fi=document.getElementById('news-img-file'); if(fi.files.length>0) iu=await uploadImg(fi.files[0]); }
+                    
+                    const tags = generateTags(t, c);
+                    const dt={title:t, content:c, imageUrl:iu, tags: tags}; 
+                    if(i) await updateDoc(doc(db,'news',i),{...dt,updatedAt:serverTimestamp()}); else await addDoc(collection(db,'news'),{...dt,createdAt:serverTimestamp()}); 
+                    this.resetNewsForm(); toast('تم نشر الخبر بنجاح.', 'success'); 
+                }catch(er){ console.error(er); toast(er.message.includes('permission') ? 'مرفوض: تأكد من قواعد حماية Firebase' : 'خطأ: ' + er.message, 'error');}finally{b.disabled=false; b.innerHTML='نشر الخبر <i data-lucide="send" class="w-5 h-5 inline ml-1"></i>';lucide.createIcons();} 
+            }
+            resetNewsForm() { document.getElementById('news-form').reset(); document.getElementById('news-id').value=''; document.getElementById('news-cancel-btn').classList.add('hidden'); document.getElementById('news-img-type').value='file'; this.toggleNewsImgType(); }
+            editNews(i,t,c,iu) { this.resetNewsForm(); document.getElementById('news-id').value=i; document.getElementById('news-title').value=t; document.getElementById('news-content').value=c; document.getElementById('news-img-url').value=iu; document.getElementById('news-cancel-btn').classList.remove('hidden'); document.getElementById('news-img-type').value='url'; this.toggleNewsImgType(); window.scrollTo(0,0); }
+            async delNews(i) { confirm('حذف هذا الخبر نهائياً؟', async()=>await deleteDoc(doc(db,'news',i))); }
+
+            // --- Album Admin ---
             initAlbum() {
                 this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'album_images'), orderBy('createdAt','desc')), s=>{ 
                     const l=document.getElementById('album-list'); l.innerHTML=''; 
                     s.forEach(d=>{ 
                         const v=d.data(); 
-                        l.innerHTML+=`<div class="bg-[var(--bg-base)] p-4 rounded-3xl border border-[var(--border-color)] flex flex-col shadow-md hover:border-indigo-500/50 transition-colors"><div class="relative w-full h-40 rounded-xl overflow-hidden mb-3 cursor-pointer group" onclick="app.showImage('${v.imageUrl}')"><img src="${v.imageUrl}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"><div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="text-white w-8 h-8"></i></div></div><h4 class="font-bold text-sm line-clamp-2 flex-1 text-white leading-snug mb-3">${v.caption || 'بدون نص'}</h4><div class="flex gap-2 admin-only"><button onclick="app.admin.editAlbum('${d.id}','${v.imageUrl}','${(v.caption||'').replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="flex-1 text-cyan-400 bg-cyan-900/40 py-2 rounded-xl hover:bg-cyan-500 hover:text-white transition-colors border border-cyan-500/50"><i data-lucide="edit-3" class="w-4 h-4 mx-auto"></i></button><button onclick="app.admin.delAlbum('${d.id}')" class="flex-1 text-rose-400 bg-rose-900/40 py-2 rounded-xl hover:bg-rose-500 hover:text-white transition-colors border border-rose-500/50"><i data-lucide="trash-2" class="w-4 h-4 mx-auto"></i></button></div></div>`; 
+                        l.innerHTML+=`<div class="bg-[var(--bg-base)] p-4 rounded-3xl border border-[var(--border-color)] flex flex-col shadow-md hover:border-indigo-500/50 transition-colors"><div class="relative w-full h-40 rounded-xl overflow-hidden mb-3 cursor-pointer group" onclick="app.showImage('${v.imageUrl}')"><div class="absolute inset-0 bg-cover bg-center blur-md opacity-50 scale-110" style="background-image: url('${v.imageUrl}')"></div><img src="${v.imageUrl}" class="relative w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 z-10"><div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20"><i data-lucide="zoom-in" class="text-white w-8 h-8"></i></div></div><h4 class="font-bold text-sm line-clamp-2 flex-1 text-white leading-snug mb-3">${v.caption || 'بدون نص'}</h4><div class="flex gap-2 admin-only"><button onclick="app.admin.editAlbum('${d.id}','${v.imageUrl}','${(v.caption||'').replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="flex-1 text-cyan-400 bg-cyan-900/40 py-2 rounded-xl hover:bg-cyan-500 hover:text-white transition-colors border border-cyan-500/50"><i data-lucide="edit-3" class="w-4 h-4 mx-auto"></i></button><button onclick="app.admin.delAlbum('${d.id}')" class="flex-1 text-rose-400 bg-rose-900/40 py-2 rounded-xl hover:bg-rose-500 hover:text-white transition-colors border border-rose-500/50"><i data-lucide="trash-2" class="w-4 h-4 mx-auto"></i></button></div></div>`; 
                     }); 
                     lucide.createIcons(); 
                 }));
@@ -1319,28 +1461,51 @@
             editAlbum(i,iu,t) { this.resetAlbumForm(); document.getElementById('album-id').value=i; document.getElementById('album-caption').value=t; document.getElementById('album-img-url').value=iu; document.getElementById('album-cancel-btn').classList.remove('hidden'); document.getElementById('album-submit-btn').innerHTML='حفظ التعديل <i data-lucide="save" class="w-6 h-6 inline ml-1"></i>'; lucide.createIcons(); document.getElementById('album-img-type').value='url'; this.toggleAlbumImgType(); window.scrollTo(0,0); }
             async delAlbum(i) { confirm('حذف هذه الصورة نهائياً؟', async()=>await deleteDoc(doc(db,'album_images',i))); }
 
-            // --- Services Directory ---
+            // --- Services Directory (DYNAMIC) ---
             initSrv() {
+                // Fetch Categories
+                this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'service_categories'), orderBy('createdAt','asc')), s=>{ 
+                    this.srvCats = s.docs.map(x=>({id:x.id, ...x.data()}));
+                    const cl = document.getElementById('srv-cat-list'); cl.innerHTML='';
+                    const cs = document.getElementById('srv-cat'); cs.innerHTML='<option value="" disabled selected>اختر القسم...</option>';
+                    this.srvCats.forEach(c => {
+                        cl.innerHTML+=`<div class="bg-amber-900/20 border border-amber-500/50 rounded-lg px-3 py-2 flex items-center gap-2"><i data-lucide="${c.icon}" class="w-4 h-4 text-amber-400"></i><span class="text-amber-100 font-bold text-sm">${c.name}</span><button onclick="app.admin.delSrvCat('${c.id}')" class="text-rose-400 hover:text-rose-500 ml-1"><i data-lucide="x" class="w-4 h-4"></i></button></div>`;
+                        cs.innerHTML+=`<option value="${c.id}">${c.name}</option>`;
+                    });
+                    lucide.createIcons();
+                }));
+
+                // Fetch Services
                 this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'services'), orderBy('createdAt','desc')), s=>{ 
                     const l=document.getElementById('srv-list'); l.innerHTML=''; 
                     s.forEach(d=>{ 
                         const v=d.data(); 
-                        l.innerHTML+=`<tr class="hover:bg-[var(--bg-surface-solid)] transition-colors"><td class="p-4 text-sm font-bold text-[var(--text-muted)]">${v.category}</td><td class="p-4 font-black text-amber-400 text-lg">${v.name}</td><td class="p-4 text-sm font-bold whitespace-normal leading-relaxed text-white min-w-[200px]">${v.details}</td><td class="p-4" dir="ltr"><div class="flex items-center justify-end gap-2"><span class="text-blue-400 font-bold text-sm">${v.phone}</span><a href="https://wa.me/${formatWA(v.phone)}" target="_blank" class="text-[#25D366] bg-[#25D366]/10 p-1.5 rounded hover:bg-[#25D366] hover:text-white transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i></a><a href="tel:${v.phone}" class="text-blue-400 bg-blue-500/10 p-1.5 rounded hover:bg-blue-500 hover:text-white transition-colors"><i data-lucide="phone" class="w-4 h-4"></i></a></div></td><td class="p-4 admin-only text-center"><button onclick="app.admin.editSrv('${d.id}','${v.category}','${v.name.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.details.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.phone}')" class="text-cyan-400 bg-cyan-500/10 p-2 rounded-lg hover:bg-cyan-600 hover:text-white transition-all border border-cyan-500/30 shadow-sm ml-2"><i data-lucide="edit-3" class="w-4 h-4 inline"></i></button><button onclick="app.admin.delSrv('${d.id}')" class="text-rose-500 bg-rose-500/10 p-2 rounded-lg hover:bg-rose-600 hover:text-white transition-all border border-rose-500/30 shadow-sm"><i data-lucide="trash-2" class="w-4 h-4 inline"></i></button></td></tr>`; 
+                        const catName = this.srvCats.find(c=>c.id===v.categoryId)?.name || 'غير معروف';
+                        l.innerHTML+=`<tr class="hover:bg-[var(--bg-surface-solid)] transition-colors"><td class="p-4 text-sm font-bold text-[var(--text-muted)]">${catName}</td><td class="p-4 font-black text-amber-400 text-lg">${v.name}</td><td class="p-4 text-sm font-bold whitespace-normal leading-relaxed text-white min-w-[200px]">${v.details}</td><td class="p-4" dir="ltr"><div class="flex items-center justify-end gap-2"><span class="text-blue-400 font-bold text-sm">${v.phone}</span><a href="https://wa.me/${formatWA(v.phone)}" target="_blank" class="text-[#25D366] bg-[#25D366]/10 p-1.5 rounded hover:bg-[#25D366] hover:text-white transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i></a><a href="tel:${v.phone}" class="text-blue-400 bg-blue-500/10 p-1.5 rounded hover:bg-blue-500 hover:text-white transition-colors"><i data-lucide="phone" class="w-4 h-4"></i></a></div></td><td class="p-4 admin-only text-center"><button onclick="app.admin.editSrv('${d.id}','${v.categoryId}','${v.name.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.details.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.phone}')" class="text-cyan-400 bg-cyan-500/10 p-2 rounded-lg hover:bg-cyan-600 hover:text-white transition-all border border-cyan-500/30 shadow-sm ml-2"><i data-lucide="edit-3" class="w-4 h-4 inline"></i></button><button onclick="app.admin.delSrv('${d.id}')" class="text-rose-500 bg-rose-500/10 p-2 rounded-lg hover:bg-rose-600 hover:text-white transition-all border border-rose-500/30 shadow-sm"><i data-lucide="trash-2" class="w-4 h-4 inline"></i></button></td></tr>`; 
                     }); 
                     lucide.createIcons(); 
                 }));
             }
+            async saveSrvCat(e) {
+                e.preventDefault();
+                const name = document.getElementById('srv-cat-name').value.trim();
+                const icon = document.getElementById('srv-cat-icon').value;
+                if(!name) return;
+                try { await addDoc(collection(db,'service_categories'),{name, icon, createdAt:serverTimestamp()}); document.getElementById('srv-cat-name').value=''; toast('تم إضافة القسم', 'success'); } 
+                catch(er) { console.error(er); toast('فشل إضافة القسم', 'error'); }
+            }
+            async delSrvCat(id) { confirm('تأكيد حذف القسم؟ (لن تحذف الخدمات التي بداخله)', async()=>await deleteDoc(doc(db,'service_categories',id))); }
             async saveService(e) {
                 e.preventDefault(); const b=document.getElementById('srv-submit-btn'); b.disabled=true; b.innerHTML='<i data-lucide="loader-2" class="animate-spin w-5 h-5 text-white inline mr-2"></i> جاري الحفظ...'; lucide.createIcons();
                 try {
-                    const id = document.getElementById('srv-id').value, cat = document.getElementById('srv-cat').value, name = document.getElementById('srv-name').value, details = document.getElementById('srv-details').value, phone = document.getElementById('srv-phone').value;
-                    const data = { category: cat, name, details, phone };
+                    const id = document.getElementById('srv-id').value, catId = document.getElementById('srv-cat').value, name = document.getElementById('srv-name').value, details = document.getElementById('srv-details').value, phone = document.getElementById('srv-phone').value;
+                    const data = { categoryId: catId, name, details, phone };
                     if(id) { await updateDoc(doc(db,'services',id), {...data, updatedAt: serverTimestamp()}); } else { await addDoc(collection(db,'services'), {...data, createdAt: serverTimestamp()}); }
                     this.resetSrvForm(); toast('تم حفظ بيانات الخدمة بنجاح.', 'success');
                 } catch(er) { console.error("Save Service Error: ", er); toast(er.message.includes('permission') ? 'مرفوض: ليس لديك صلاحية أو أنك نسيت إضافة قسم services لقواعد الحماية في Firebase.' : 'خطأ: ' + er.message, 'error'); } finally { b.disabled=false; b.innerHTML='إضافة الدليل <i data-lucide="plus-circle" class="w-6 h-6 inline ml-1"></i>'; lucide.createIcons(); }
             }
             resetSrvForm() { document.getElementById('srv-form').reset(); document.getElementById('srv-id').value=''; document.getElementById('srv-cancel-btn').classList.add('hidden'); document.getElementById('srv-submit-btn').innerHTML='إضافة الدليل <i data-lucide="plus-circle" class="w-6 h-6 inline ml-1"></i>'; lucide.createIcons(); }
-            editSrv(id, cat, name, details, phone) { this.resetSrvForm(); document.getElementById('srv-id').value=id; document.getElementById('srv-cat').value=cat; document.getElementById('srv-name').value=name; document.getElementById('srv-details').value=details; document.getElementById('srv-phone').value=phone; document.getElementById('srv-cancel-btn').classList.remove('hidden'); document.getElementById('srv-submit-btn').innerHTML='حفظ التعديل <i data-lucide="save" class="w-6 h-6 inline ml-1"></i>'; lucide.createIcons(); window.scrollTo(0,0); }
+            editSrv(id, catId, name, details, phone) { this.resetSrvForm(); document.getElementById('srv-id').value=id; document.getElementById('srv-cat').value=catId; document.getElementById('srv-name').value=name; document.getElementById('srv-details').value=details; document.getElementById('srv-phone').value=phone; document.getElementById('srv-cancel-btn').classList.remove('hidden'); document.getElementById('srv-submit-btn').innerHTML='حفظ التعديل <i data-lucide="save" class="w-6 h-6 inline ml-1"></i>'; lucide.createIcons(); window.scrollTo(0,0); }
             async delSrv(id) { confirm('هل تريد بالتأكيد حذف هذه الخدمة من الدليل؟', async()=>await deleteDoc(doc(db,'services',id))); }
 
             // --- Finances ---
@@ -1364,7 +1529,6 @@
                 this.up2=this.a.safeSnapshot(query(collection(db,`financials/temporary_projects/projects/${id}/logs`),orderBy('timestamp','desc')), s=>{ 
                     const nm=document.getElementById('sel-proj').options[document.getElementById('sel-proj').selectedIndex].text;
                     this.renL(document.getElementById('log-proj'),s.docs, `financials/temporary_projects/projects/${id}`, nm); 
-                    
                     let tc=0; 
                     s.docs.forEach(d=>{
                         const msg = d.data().message || '';
@@ -1456,18 +1620,34 @@
 
             // --- Activities ---
             initAct() { this.a.unsubs.push(this.a.safeSnapshot(query(collection(db,'charity_activities'),orderBy('createdAt','desc')), s=>{ const tb=document.getElementById('act-table'); tb.innerHTML=''; s.forEach(d=>{ const v=d.data(); tb.innerHTML+=`<tr class="hover:bg-[var(--bg-surface-solid)] transition-colors"><td class="p-4 text-sm font-bold">${v.createdAt?.toDate().toLocaleDateString('ar-EG')||''}</td><td class="p-4 font-black text-emerald-400 text-lg">${v.name}</td><td class="p-4 text-sm font-bold whitespace-normal leading-relaxed text-white">${v.reason}</td><td class="p-4 text-cyan-400 font-black text-sm">${v.donor}</td><td class="p-4 text-amber-400 font-black text-sm">${v.beneficiary}</td><td class="p-4 admin-only text-center"><button onclick="app.admin.delAct('${d.id}')" class="text-rose-500 bg-rose-500/10 p-2 rounded-lg hover:bg-rose-600 hover:text-white transition-all border border-rose-500/30 shadow-sm"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`; }); lucide.createIcons(); })); }
-            async addActivity(e) { e.preventDefault(); const f=e.target; await addDoc(collection(db,'charity_activities'),{name:f.elements[0].value,reason:f.elements[1].value,donor:f.elements[2].value,beneficiary:f.elements[3].value,createdAt:serverTimestamp()}); f.reset(); toast('تم توثيق النشاط وحفظه بنجاح', 'success'); }
+            async addActivity(e) { e.preventDefault(); const f=e.target; try { await addDoc(collection(db,'charity_activities'),{name:f.elements[0].value,reason:f.elements[1].value,donor:f.elements[2].value,beneficiary:f.elements[3].value,createdAt:serverTimestamp()}); f.reset(); toast('تم توثيق النشاط وحفظه بنجاح', 'success'); } catch(er) { console.error(er); toast(er.message.includes('permission') ? 'مرفوض: تأكد من قواعد حماية Firebase' : 'خطأ: ' + er.message, 'error'); } }
             async delAct(id) { confirm('هل تريد بالتأكيد إزالة هذا التوثيق من سجل الأنشطة بشكل نهائي؟', async()=>await deleteDoc(doc(db,'charity_activities',id))); }
 
-            // --- Portal ---
+            // --- Portal (DYNAMIC SECTIONS) ---
             initPor() {
-                this.pSec = 'past_work';
-                const rb = () => { const tc=document.getElementById('por-tabs'); tc.innerHTML=''; Object.entries(this.a.portalSecs).forEach(([k,v])=>{ const b=document.createElement('button'); b.className=`px-5 py-2.5 rounded-xl text-sm font-black transition-all shadow-sm border ${this.pSec===k?'bg-emerald-600 text-white border-emerald-400 scale-105':'bg-[var(--bg-surface-solid)] text-[var(--text-muted)] hover:text-white border-[var(--border-color)]'}`; b.textContent=v.t; b.onclick=()=>{this.pSec=k;rb();this.ldPor();}; tc.appendChild(b); }); }; rb();
-                this.ldPor();
                 this.a.unsubs.push(this.a.safeSnapshot(doc(db,'app_data','news_ticker'), d=>document.getElementById('por-ticker').value=d.data()?.text||''));
                 this.a.unsubs.push(this.a.safeSnapshot(doc(db,'app_data','settings'), d=>document.getElementById('por-speed').value=d.data()?.slideshowDuration||15));
+                
+                // Restoring the 4 fixed portal sections (أعمالنا السابقة، الحالية، اللاحقة، مصروفات العام) to ensure old data isn't lost
+                this.pSec = this.pSec || 'past_work';
+                const tc=document.getElementById('por-tabs'); tc.innerHTML=''; 
+                Object.entries(this.a.portalSecs).forEach(([k,v])=>{ const b=document.createElement('button'); b.className=`px-5 py-2.5 rounded-xl text-sm font-black transition-all shadow-sm border ${this.pSec===k?'bg-emerald-600 text-white border-emerald-400 scale-105':'bg-[var(--bg-surface-solid)] text-[var(--text-muted)] hover:text-white border-[var(--border-color)]'}`; b.textContent=v.t; b.onclick=()=>{this.pSec=k; this.initPor();}; tc.appendChild(b); });
+                this.ldPor();
             }
-            ldPor() { if(this.up)this.up(); document.getElementById('por-sec-title').innerHTML=`محتوى قسم: <span class="text-white">${this.a.portalSecs[this.pSec].t}</span>`; this.up=this.a.safeSnapshot(query(collection(db,`portal_sections/${this.pSec}/topics`),orderBy('createdAt','desc')), s=>{ const l=document.getElementById('por-list'); l.innerHTML=''; s.forEach(d=>{ const v=d.data(); l.innerHTML+=`<div class="bg-[var(--bg-base)] p-5 rounded-2xl flex flex-col sm:flex-row justify-between gap-4 border border-[var(--border-color)] shadow-md hover:border-emerald-500/50 transition-colors"><div class="flex-1"><h4 class="font-black text-lg mb-2 text-emerald-300 leading-snug">${v.title}</h4><p class="text-sm font-bold text-white leading-relaxed">${v.description}</p></div><div class="flex sm:flex-col gap-2 admin-only justify-center sm:justify-start min-w-[50px]"><button onclick="app.admin.editPor('${d.id}','${v.title.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.description.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="text-cyan-400 bg-cyan-500/10 hover:bg-cyan-600 hover:text-white p-2.5 rounded-xl transition-all shadow-sm border border-cyan-500/30" title="تعديل المحتوى"><i data-lucide="edit-3" class="w-5 h-5"></i></button><button onclick="app.admin.delPor('${d.id}')" class="text-rose-500 bg-rose-500/10 hover:bg-rose-600 hover:text-white p-2.5 rounded-xl transition-all shadow-sm border border-rose-500/30" title="إزالة الموضوع"><i data-lucide="trash-2" class="w-5 h-5"></i></button></div></div>`; }); lucide.createIcons(); }); this.a.unsubs.push(this.up); }
+            ldPor() { 
+                if(this.up)this.up(); 
+                document.getElementById('por-sec-title').innerHTML=`محتوى قسم: <span class="text-white">${this.a.portalSecs[this.pSec].t}</span>`; 
+                
+                this.up=this.a.safeSnapshot(query(collection(db,`portal_sections/${this.pSec}/topics`),orderBy('createdAt','desc')), s=>{ 
+                    const l=document.getElementById('por-list'); l.innerHTML=''; 
+                    s.forEach(d=>{ 
+                        const v=d.data(); 
+                        l.innerHTML+=`<div class="bg-[var(--bg-base)] p-5 rounded-2xl flex flex-col sm:flex-row justify-between gap-4 border border-[var(--border-color)] shadow-md hover:border-emerald-500/50 transition-colors"><div class="flex-1"><h4 class="font-black text-lg mb-2 text-emerald-300 leading-snug">${v.title}</h4><p class="text-sm font-bold text-white leading-relaxed">${v.description}</p></div><div class="flex sm:flex-col gap-2 admin-only justify-center sm:justify-start min-w-[50px]"><button onclick="app.admin.editPor('${d.id}','${v.title.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${v.description.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')" class="text-cyan-400 bg-cyan-500/10 hover:bg-cyan-600 hover:text-white p-2.5 rounded-xl transition-all shadow-sm border border-cyan-500/30" title="تعديل المحتوى"><i data-lucide="edit-3" class="w-5 h-5"></i></button><button onclick="app.admin.delPor('${d.id}')" class="text-rose-500 bg-rose-500/10 hover:bg-rose-600 hover:text-white p-2.5 rounded-xl transition-all shadow-sm border border-rose-500/30" title="إزالة الموضوع"><i data-lucide="trash-2" class="w-5 h-5"></i></button></div></div>`; 
+                    }); 
+                    lucide.createIcons(); 
+                }); 
+                this.a.unsubs.push(this.up); 
+            }
             showTopicForm() { document.getElementById('por-form').classList.remove('hidden'); document.getElementById('por-id').value=''; document.getElementById('por-title').value=''; document.getElementById('por-desc').value=''; }
             hideTopicForm() { document.getElementById('por-form').classList.add('hidden'); }
             editPor(i,t,d) { this.showTopicForm(); document.getElementById('por-id').value=i; document.getElementById('por-title').value=t; document.getElementById('por-desc').value=d; }
