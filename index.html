@@ -54,14 +54,19 @@
             --text-muted: #bae6fd;
         }
 
-        body {
+                body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bg-base);
             color: var(--text-main);
             transition: background-color 0.3s ease, color 0.3s ease;
             overflow-x: hidden;
-            font-size: 1rem;
+            font-size: 1rem; 
             font-weight: 700;
+            /* منع تحديد النص */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         h1,
@@ -343,11 +348,35 @@
                 delNews: checkLocalRun,
                 exportToPDF: checkLocalRun
             },
-            auth: {
-                login: checkLocalRun,
-                logout: checkLocalRun
-            }
+                        auth: { login: checkLocalRun, logout: checkLocalRun }
         };
+    </script>
+
+    <script>
+        // منع كليك يمين
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        
+        // منع سحب وإفلات الصور
+        document.addEventListener('dragstart', event => event.preventDefault());
+        
+        // منع اختصارات لوحة المفاتيح المزعجة
+        document.addEventListener('keydown', event => {
+            // منع F12 (أدوات المطور)
+            if (event.keyCode === 123) { 
+                event.preventDefault(); 
+                return false; 
+            }
+            // منع Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (فتح الفاحص)
+            if (event.ctrlKey && event.shiftKey && (event.keyCode === 73 || event.keyCode === 74 || event.keyCode === 67)) { 
+                event.preventDefault(); 
+                return false; 
+            }
+            // منع Ctrl+U (المصدر) | Ctrl+S (حفظ) | Ctrl+P (طباعة) | Ctrl+C (نسخ) | Ctrl+A (تحديد الكل)
+            if (event.ctrlKey && (event.keyCode === 85 || event.keyCode === 83 || event.keyCode === 80 || event.keyCode === 67 || event.keyCode === 65)) { 
+                event.preventDefault(); 
+                return false; 
+            }
+        });
     </script>
 </head>
 
